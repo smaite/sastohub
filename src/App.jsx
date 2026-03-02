@@ -10,6 +10,7 @@ import Vendors from './pages/Vendors';
 import VendorDashboard from './pages/VendorDashboard';
 import VendorOnboarding from './pages/VendorOnboarding';
 import AddProduct from './pages/AddProduct';
+import AdminDashboard from './pages/AdminDashboard';
 import { supabase } from './lib/supabase';
 import { useAuthStore } from './store/authStore';
 
@@ -98,6 +99,11 @@ function App() {
             <Route path="dashboard" element={<VendorDashboard />} />
             <Route path="onboarding" element={<VendorOnboarding />} />
             <Route path="add-product" element={<AddProduct />} />
+          </Route>
+
+          {/* Admin Routes */}
+          <Route path="admin">
+            <Route path="dashboard" element={<AdminDashboard />} />
           </Route>
 
           {/* 404 fallback */}

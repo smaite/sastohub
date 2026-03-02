@@ -88,7 +88,12 @@ export default function Navbar() {
                   </div>
                   {profile?.role === 'seller' && (
                     <Link to="/vendor/dashboard" className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-50">
-                      <LayoutDashboard className="h-4 w-4" /> Dashboard
+                      <LayoutDashboard className="h-4 w-4" /> Seller Dashboard
+                    </Link>
+                  )}
+                  {profile?.role === 'admin' && (
+                    <Link to="/admin/dashboard" className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-50 text-purple-600 font-semibold">
+                      <LayoutDashboard className="h-4 w-4" /> Admin Dashboard
                     </Link>
                   )}
                   <button onClick={handleSignOut} className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-50 w-full text-left text-red-500">
