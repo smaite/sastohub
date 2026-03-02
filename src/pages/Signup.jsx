@@ -6,7 +6,6 @@ export default function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
-  const [role, setRole] = useState('buyer');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -21,7 +20,7 @@ export default function Signup() {
       options: {
         data: {
           full_name: fullName,
-          role: role,
+          role: 'buyer',
         },
       },
     });
@@ -64,17 +63,6 @@ export default function Signup() {
             className="w-full p-2 border rounded focus:ring-1 focus:ring-primary outline-none"
             required
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Account Type</label>
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="w-full p-2 border rounded focus:ring-1 focus:ring-primary outline-none"
-          >
-            <option value="buyer">Buyer</option>
-            <option value="seller">Seller</option>
-          </select>
         </div>
         <button
           type="submit"

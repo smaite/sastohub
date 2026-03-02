@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
+import { useNavigate } from 'react-router-dom';
 import { Clock, Store, MapPin, CreditCard, FileText, Upload, CheckCircle, X, Globe, Phone, Building } from 'lucide-react';
 
 function SectionHeader({ icon: Icon, number, title, subtitle }) {
@@ -85,13 +86,36 @@ const initialFiles = {
 };
 
 export default function VendorOnboarding() {
-  const { user } = useAuthStore();
+  const { user, profile, loading: authLoading } = useAuthStore();
+  const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [form, setForm] = useState(initialForm);
   const [files, setFiles] = useState(initialFiles);
   const [agree, setAgree] = useState({ terms: false, privacy: false, legitimate: false });
+
+  useEffect(() => {
+    if (!authLoading) {
+      if (!user) {
+        navigate('/login');
+      } else if (profile?.role === 'seller') {
+        navigate('/vendor/dashboard');
+      } else if (profile?.role === 'admin') {
+        navigate('/admin/dashboard');
+      }
+    }
+  }, [user, profile, authLoading, navigate]);
+
+  useEffect(() => {
+    if (user) {
+      const checkExisting = async () => {
+        const { data } = await supabase.from('vendors').select('status').eq('owner_id', user.id).single();
+        if (data) setSubmitted(true);
+      };
+      checkExisting();
+    }
+  }, [user]);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
   const handleFile = (e) => setFiles({ ...files, [e.target.name]: e.target.files[0] || null });

@@ -16,7 +16,14 @@
       "Bash(node E:/seller/write_files.js)",
       "Bash(node write_files.js)",
       "Bash(node E:/seller/write_files.cjs)",
-      "Bash(node write_files.cjs)"
+      "Bash(node write_files.cjs)",
+      "Bash(npx supabase --version)",
+      "Bash(npx supabase help db)",
+      "Bash(npx supabase --help)",
+      "Bash(npx supabase init)",
+      "Bash(npx supabase migration new admin_policies)",
+      "Bash(npx skills find supabase)",
+      "Bash(/mcp)"
     ]
   }
 }
