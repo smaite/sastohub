@@ -15,7 +15,8 @@
       "Bash(node -e \"const fs=require\\(''fs''\\); const c=fs.readFileSync\\(''E:/seller/src/pages/VendorDashboard.jsx'',''utf8''\\); console.log\\(c.length\\);\")",
       "Bash(node E:/seller/write_files.js)",
       "Bash(node write_files.js)",
-      "Bash(node E:/seller/write_files.cjs)"
+      "Bash(node E:/seller/write_files.cjs)",
+      "Bash(node write_files.cjs)"
     ]
   }
 }
