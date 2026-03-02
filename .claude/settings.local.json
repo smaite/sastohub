@@ -7,7 +7,11 @@
       "mcp__supabase__get_project_url",
       "mcp__supabase__get_publishable_keys",
       "mcp__ide__getDiagnostics",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(python3 -c \":*)",
+      "Bash(python3 -:*)",
+      "Bash(python3 /dev/stdin:*)",
+      "Bash(node -e \":*)"
     ]
   }
 }
