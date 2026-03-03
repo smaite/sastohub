@@ -6,7 +6,7 @@ import { useCartStore } from '../store/cartStore';
 import {
   ShoppingCart, Heart, Share2, ShieldCheck,
   Truck, RotateCcw, MessageCircle, Store,
-  Star, ChevronRight, Minus, Plus, User, Send
+  Star, ChevronRight, Minus, Plus, User, Send, CheckCircle
 } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 
@@ -112,6 +112,15 @@ export default function ProductDetail() {
     for (let i = 0; i < quantity; i++) {
       addItem(product);
     }
+  };
+
+  const handleBuyNow = () => {
+    handleAddToCart();
+    navigate('/checkout');
+  };
+
+  const handleVisitStore = () => {
+    navigate(`/products?vendor=${product.vendor_id}`);
   };
 
   const handleSubmitReview = async (e) => {
@@ -258,7 +267,10 @@ export default function ProductDetail() {
                     >
                       <ShoppingCart className="h-5 w-5" /> ADD TO CART
                     </button>
-                    <button className="w-full bg-secondary text-white py-4 rounded-2xl font-black text-base shadow-xl shadow-secondary/20 hover:bg-black hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-3">
+                    <button
+                      onClick={handleBuyNow}
+                      className="w-full bg-secondary text-white py-4 rounded-2xl font-black text-base shadow-xl shadow-secondary/20 hover:bg-black hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-3"
+                    >
                       BUY IT NOW
                     </button>
                   </div>
@@ -308,8 +320,17 @@ export default function ProductDetail() {
                   <h4 className="font-black truncate">{product.vendors?.business_name}</h4>
                 </div>
               </div>
-              <button className="w-full py-3 bg-gray-50 hover:bg-gray-100 border border-gray-100 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">
+              <button
+                onClick={handleVisitStore}
+                className="w-full py-3 bg-gray-50 hover:bg-gray-100 border border-gray-100 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all"
+              >
                 Visit Store
+              </button>
+              <button
+                onClick={() => alert('Chat feature coming soon!')}
+                className="w-full py-3 bg-primary/5 hover:bg-primary/10 text-primary border border-primary/10 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all mt-3"
+              >
+                Chat with Seller
               </button>
             </div>
           </div>

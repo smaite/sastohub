@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Mail, ArrowLeft, Send, ShoppingBag } from 'lucide-react';
 
 export default function ForgotPassword() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
@@ -19,8 +20,12 @@ export default function ForgotPassword() {
       redirectTo: `${window.location.origin}/reset-password`,
     });
 
-    if (error) setError(error.message);
-    else setMessage('Check your email for the password reset link.');
+    if (error) {
+      setError(error.message);
+    } else {
+      // Redirect to the Reset Password page where the OTP input is
+      navigate('/reset-password', { state: { email } });
+    }
     setLoading(false);
   };
 
@@ -66,8 +71,8 @@ export default function ForgotPassword() {
           </Link>
 
           <div className="space-y-2 mb-8">
-            <h2 className="text-3xl md:text-4xl font-black uppercase italic tracking-tighter text-secondary">Reset Password</h2>
-            <p className="text-gray-400 font-bold text-[10px] tracking-widest uppercase leading-loose">Enter your email to receive a recovery link</p>
+            <h2 className="text-3xl md:text-4xl font-black uppercase italic tracking-tighter text-secondary">Account Recovery</h2>
+            <p className="text-gray-400 font-bold text-[10px] tracking-widest uppercase leading-loose">Enter your email to receive an 8-digit recovery code</p>
           </div>
 
           {error && (

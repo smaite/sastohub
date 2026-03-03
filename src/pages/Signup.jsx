@@ -50,16 +50,16 @@ export default function Signup() {
         </div>
 
         <div className="relative z-10">
-          <Link to="/" className="flex items-center gap-3 group text-white">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-primary/20">
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-primary/20 text-white">
               <ShoppingBag className="text-white h-6 w-6" />
             </div>
-            <span className="text-2xl font-black tracking-tighter uppercase italic">SastoHub</span>
+            <span className="text-2xl font-black text-white tracking-tighter uppercase italic">SastoHub</span>
           </Link>
         </div>
 
         <div className="relative z-10">
-          <h1 className="text-5xl xl:text-6xl font-black leading-[1.1] mb-6 italic uppercase tracking-tighter">
+          <h1 className="text-5xl xl:text-6xl font-black text-white leading-[1.1] mb-6 italic uppercase tracking-tighter">
             Join the <br />
             <span className="text-primary text-glow">Evolution</span> <br />
             of Trade.
@@ -85,7 +85,7 @@ export default function Signup() {
 
       {/* Right Side: Signup Form (Independently Scrollable) */}
       <div className="flex-1 flex flex-col p-6 md:p-12 lg:p-16 bg-white overflow-y-auto scrollbar-hide text-secondary">
-        <div className="w-full max-w-md mx-auto my-auto py-8">
+        <div className="w-full max-w-md mx-auto my-auto py-8 text-secondary">
           {/* Mobile Logo */}
           <div className="lg:hidden mb-12">
             <Link to="/" className="flex items-center gap-2">
@@ -107,7 +107,7 @@ export default function Signup() {
             </div>
           )}
 
-          <form onSubmit={handleSignup} className="space-y-4">
+          <form onSubmit={handleSignup} className="space-y-4 text-secondary">
             <div className="space-y-1.5">
               <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Full Name</label>
               <div className="relative group">
@@ -117,7 +117,7 @@ export default function Signup() {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="John Doe"
-                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-[16px] focus:bg-white focus:border-primary/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all font-bold text-sm shadow-inner"
+                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-[16px] focus:bg-white focus:border-primary/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all font-bold text-sm shadow-inner text-secondary"
                   required
                 />
               </div>
@@ -132,7 +132,7 @@ export default function Signup() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-[16px] focus:bg-white focus:border-primary/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all font-bold text-sm shadow-inner"
+                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-[16px] focus:bg-white focus:border-primary/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all font-bold text-sm shadow-inner text-secondary"
                   required
                 />
               </div>
@@ -147,7 +147,7 @@ export default function Signup() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Min. 8 characters"
-                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-[16px] focus:bg-white focus:border-primary/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all font-bold text-sm shadow-inner"
+                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-[16px] focus:bg-white focus:border-primary/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all font-bold text-sm shadow-inner text-secondary"
                   required
                 />
               </div>
