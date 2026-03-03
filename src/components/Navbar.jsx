@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   ShoppingCart, User, Search, LogOut, LayoutDashboard,
@@ -6,11 +6,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cartStore';
-
-const categories = [
-  'Electronics', 'Fashion', 'Home & Living', 'Sports', 'Beauty',
-  'Books', 'Toys', 'Groceries', 'Mobiles', 'Appliances',
-];
+import { supabase } from '../lib/supabase';
 
 export default function Navbar() {
   const { user, profile, signOut } = useAuthStore();
@@ -18,6 +14,15 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      const { data } = await supabase.from('categories').select('name').order('name');
+      if (data) setCategories(data.map(c => c.name));
+    }
+    fetchCategories();
+  }, []);
 
   const handleSignOut = async () => {
     await signOut();

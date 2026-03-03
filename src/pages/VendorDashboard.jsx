@@ -75,6 +75,23 @@ export default function VendorDashboard() {
     setActionLoading('');
   }
 
+  async function deleteProduct(productId) {
+    if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) return;
+
+    setActionLoading(productId);
+    const { error } = await supabase
+      .from('products')
+      .delete()
+      .eq('id', productId);
+
+    if (!error) {
+      await fetchVendorData();
+    } else {
+      alert(error.message);
+    }
+    setActionLoading('');
+  }
+
   if (loading) return (
     <div className="min-h-[70vh] flex items-center justify-center">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -169,6 +186,7 @@ export default function VendorDashboard() {
                   <th className='px-6 py-4 font-bold text-gray-500 text-xs uppercase tracking-wider'>Price</th>
                   <th className='px-6 py-4 font-bold text-gray-500 text-xs uppercase tracking-wider'>Stock</th>
                   <th className='px-6 py-4 font-bold text-gray-500 text-xs uppercase tracking-wider'>Status</th>
+                  <th className='px-6 py-4 font-bold text-gray-500 text-xs uppercase tracking-wider text-right'>Actions</th>
                 </tr>
               </thead>
               <tbody className='divide-y'>
@@ -186,6 +204,23 @@ export default function VendorDashboard() {
                       <span className={p.is_published ? 'px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-green-100 text-green-700' : 'px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-yellow-100 text-yellow-700'}>
                         {p.is_published ? 'Published' : 'Draft'}
                       </span>
+                    </td>
+                    <td className='px-6 py-4 text-right flex items-center justify-end gap-2'>
+                      <button
+                        onClick={() => navigate(`/vendor/edit-product/${p.id}`)}
+                        className="p-2 text-gray-400 hover:text-primary transition-colors hover:bg-gray-100 rounded-lg"
+                        title="Edit Product"
+                      >
+                        <Eye className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => deleteProduct(p.id)}
+                        disabled={actionLoading === p.id}
+                        className="p-2 text-gray-400 hover:text-red-500 transition-colors hover:bg-red-50 rounded-lg disabled:opacity-50"
+                        title="Delete Product"
+                      >
+                        <XCircle className="h-4 w-4" />
+                      </button>
                     </td>
                   </tr>
                 ))}

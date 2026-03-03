@@ -4,6 +4,8 @@ import RootLayout from './layouts/RootLayout';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Vendors from './pages/Vendors';
@@ -14,7 +16,9 @@ import OrderSuccess from './pages/OrderSuccess';
 import VendorDashboard from './pages/VendorDashboard';
 import VendorOnboarding from './pages/VendorOnboarding';
 import AddProduct from './pages/AddProduct';
+import EditProduct from './pages/EditProduct';
 import AdminDashboard from './pages/AdminDashboard';
+import AuthDebugger from './components/AuthDebugger';
 import { supabase } from './lib/supabase';
 import { useAuthStore } from './store/authStore';
 
@@ -94,10 +98,15 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Auth Pages (Standalone) */}
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="reset-password" element={<ResetPassword />} />
+
+        {/* Main App Pages (With Navbar & Footer) */}
         <Route path="/" element={<RootLayout />}>
           <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="vendors" element={<Vendors />} />
@@ -111,6 +120,7 @@ function App() {
             <Route path="dashboard" element={<VendorDashboard />} />
             <Route path="onboarding" element={<VendorOnboarding />} />
             <Route path="add-product" element={<AddProduct />} />
+            <Route path="edit-product/:id" element={<EditProduct />} />
           </Route>
 
           {/* Admin Routes */}
@@ -129,6 +139,7 @@ function App() {
           } />
         </Route>
       </Routes>
+      <AuthDebugger />
     </BrowserRouter>
   );
 }
