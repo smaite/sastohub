@@ -39,7 +39,7 @@ export default function Checkout() {
 
       if (orderError) throw orderError;
 
-      // 2. Create order items
+      // 2. Create order items and update stock
       const orderItems = items.map(item => ({
         order_id: order.id,
         product_id: item.id,
@@ -54,9 +54,26 @@ export default function Checkout() {
 
       if (itemsError) throw itemsError;
 
+      // 3. Update stock quantities for each product
+      for (const item of items) {
+        const { error: stockError } = await supabase.rpc('decrement_stock', {
+          row_id: item.id,
+          count: item.quantity
+        });
+
+        // If RPC doesn't exist, fallback to manual update (less safe but works for now)
+        if (stockError) {
+          const { data: p } = await supabase.from('products').select('stock_quantity').eq('id', item.id).single();
+          if (p) {
+            await supabase.from('products')
+              .update({ stock_quantity: Math.max(0, p.stock_quantity - item.quantity) })
+              .eq('id', item.id);
+          }
+        }
+      }
+
       clearCart();
-      alert('Order placed successfully!');
-      navigate('/');
+      navigate('/order-success', { state: { order } });
     } catch (error) {
       alert(error.message);
     } finally {

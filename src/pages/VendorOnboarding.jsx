@@ -127,21 +127,78 @@ export default function VendorOnboarding() {
     e.preventDefault();
     if (!user) { setError('Please log in first.'); return; }
     if (!allAgreed) { setError('Please agree to all terms before submitting.'); return; }
+
+    // Validate files
+    const requiredFiles = ['nid_front', 'nid_back', 'pan_card', 'business_reg'];
+    for (const key of requiredFiles) {
+      if (!files[key]) {
+        setError(`Please upload your ${key.replace('_', ' ')}.`);
+        return;
+      }
+    }
+
     setLoading(true); setError('');
 
-    const { data: existing } = await supabase.from('vendors').select('id').eq('owner_id', user.id).single();
-    if (existing) { setError('You have already submitted an application.'); setLoading(false); return; }
+    try {
+      // 1. Check for existing application
+      const { data: existing } = await supabase.from('vendors').select('id').eq('owner_id', user.id).single();
+      if (existing) {
+        setError('You have already submitted an application.');
+        setLoading(false);
+        return;
+      }
 
-    const { error: insertError } = await supabase.from('vendors').insert({
-      owner_id: user.id,
-      business_name: form.shop_name,
-      description: form.description,
-      status: 'pending',
-    });
+      // 2. Upload files
+      const uploadPromises = Object.entries(files).map(async ([key, file]) => {
+        if (!file) return null;
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${user.id}/${key}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+        const { data, error: uploadError } = await supabase.storage
+          .from('vendor-docs')
+          .upload(fileName, file);
 
-    if (insertError) { setError(insertError.message); }
-    else { setSubmitted(true); }
-    setLoading(false);
+        if (uploadError) throw uploadError;
+
+        // Get public URL
+        const { data: { publicUrl } } = supabase.storage
+          .from('vendor-docs')
+          .getPublicUrl(fileName);
+
+        return { key, url: publicUrl };
+      });
+
+      const uploadedFilesResults = await Promise.all(uploadPromises);
+      const fileUrls = {};
+      uploadedFilesResults.forEach(res => {
+        if (res) fileUrls[`${res.key}_url`] = res.url;
+      });
+
+      // 3. Insert vendor details
+      const { error: insertError } = await supabase.from('vendors').insert({
+        owner_id: user.id,
+        business_name: form.shop_name,
+        description: form.description,
+        website: form.website,
+        address: form.address,
+        city: form.city,
+        state: form.state,
+        postal_code: form.postal_code,
+        phone: form.phone,
+        account_holder: form.account_holder,
+        account_number: form.account_number,
+        ...fileUrls,
+        status: 'pending',
+      });
+
+      if (insertError) throw insertError;
+
+      setSubmitted(true);
+    } catch (err) {
+      console.error('Submission error:', err);
+      setError(err.message || 'An error occurred during submission.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) return (

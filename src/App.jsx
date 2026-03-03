@@ -7,6 +7,10 @@ import Signup from './pages/Signup';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Vendors from './pages/Vendors';
+import Products from './pages/Products';
+import ProductDetail from './pages/ProductDetail';
+import Orders from './pages/Orders';
+import OrderSuccess from './pages/OrderSuccess';
 import VendorDashboard from './pages/VendorDashboard';
 import VendorOnboarding from './pages/VendorOnboarding';
 import AddProduct from './pages/AddProduct';
@@ -58,13 +62,17 @@ function App() {
 
   async function fetchProfile(userId) {
     try {
+      // Force refresh by selecting directly from the table
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .single();
+        .maybeSingle();
 
-      if (!error) setProfile(data);
+      if (error) throw error;
+
+      console.log('Fetched Profile Role:', data?.role);
+      setProfile(data);
     } catch (err) {
       console.error('Profile fetch error:', err);
     } finally {
@@ -93,6 +101,10 @@ function App() {
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="vendors" element={<Vendors />} />
+          <Route path="products" element={<Products />} />
+          <Route path="product/:slug" element={<ProductDetail />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="order-success" element={<OrderSuccess />} />
 
           {/* Vendor Routes */}
           <Route path="vendor">

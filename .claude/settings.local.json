@@ -23,7 +23,15 @@
       "Bash(npx supabase init)",
       "Bash(npx supabase migration new admin_policies)",
       "Bash(npx skills find supabase)",
-      "Bash(/mcp)"
+      "Bash(/mcp)",
+      "Bash(npx supabase db diff)",
+      "Bash(claude mcp list)",
+      "mcp__supabase__execute_sql",
+      "Bash(npx supabase:*)"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
 }

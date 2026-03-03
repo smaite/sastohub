@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   ShoppingCart, User, Search, LogOut, LayoutDashboard,
-  ChevronDown, MapPin, Phone, Bell, Heart
+  ChevronDown, MapPin, Phone, Bell, Heart, Package
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cartStore';
@@ -17,10 +17,24 @@ export default function Navbar() {
   const { items } = useCartStore();
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All Categories');
 
   const handleSignOut = async () => {
     await signOut();
     navigate('/login');
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (search.trim()) {
+      navigate(`/products?search=${encodeURIComponent(search.trim())}`);
+    } else if (selectedCategory !== 'All Categories') {
+      navigate(`/products?category=${encodeURIComponent(selectedCategory)}`);
+    }
+  };
+
+  const handleCategoryClick = (cat) => {
+    navigate(`/products?category=${encodeURIComponent(cat)}`);
   };
 
   const cartCount = items.reduce((sum, i) => sum + i.quantity, 0);
@@ -35,8 +49,12 @@ export default function Navbar() {
             <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Deliver to: Kathmandu</span>
           </div>
           <div className="flex items-center gap-4">
-            <Link to="/vendors" className="hover:underline">Sell on SastoHub</Link>
-            <span>|</span>
+            {(!user || profile?.role === 'buyer') && (
+              <>
+                <Link to="/vendors" className="hover:underline">Sell on SastoHub</Link>
+                <span>|</span>
+              </>
+            )}
             <span>Help</span>
           </div>
         </div>
@@ -54,8 +72,12 @@ export default function Navbar() {
           </Link>
 
           {/* Search */}
-          <div className="flex flex-1 max-w-2xl mx-auto">
-            <select className="border border-r-0 border-gray-300 rounded-l-full px-3 py-2 text-sm bg-gray-50 outline-none text-gray-600 hidden md:block">
+          <form onSubmit={handleSearch} className="flex flex-1 max-w-2xl mx-auto">
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="border border-r-0 border-gray-300 rounded-l-full px-3 py-2 text-sm bg-gray-50 outline-none text-gray-600 hidden md:block cursor-pointer"
+            >
               <option>All Categories</option>
               {categories.map(c => <option key={c}>{c}</option>)}
             </select>
@@ -66,10 +88,10 @@ export default function Navbar() {
               placeholder="Search for products, brands and more..."
               className="flex-1 border border-gray-300 px-4 py-2 text-sm outline-none focus:border-primary"
             />
-            <button className="bg-primary text-white px-5 py-2 rounded-r-full hover:bg-orange-600 transition-colors">
+            <button type="submit" className="bg-primary text-white px-5 py-2 rounded-r-full hover:bg-orange-600 transition-colors">
               <Search className="h-5 w-5" />
             </button>
-          </div>
+          </form>
 
           {/* Right actions */}
           <div className="flex items-center gap-5 flex-shrink-0">
@@ -86,6 +108,9 @@ export default function Navbar() {
                     <p className="font-bold text-sm text-secondary truncate">{profile?.full_name || user.email}</p>
                     <p className="text-xs text-gray-400 capitalize">{profile?.role}</p>
                   </div>
+                  <Link to="/orders" className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-50">
+                    <Package className="h-4 w-4" /> My Orders
+                  </Link>
                   {profile?.role === 'seller' && (
                     <Link to="/vendor/dashboard" className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-50">
                       <LayoutDashboard className="h-4 w-4" /> Seller Dashboard
@@ -133,17 +158,26 @@ export default function Navbar() {
       {/* Category nav bar */}
       <div className="bg-secondary text-white text-sm">
         <div className="max-w-7xl mx-auto px-4 flex items-center gap-1 overflow-x-auto scrollbar-hide">
-          <button className="flex items-center gap-2 px-4 py-2.5 font-semibold whitespace-nowrap hover:bg-white/10 border-r border-white/10">
+          <button
+            onClick={() => navigate('/products')}
+            className="flex items-center gap-2 px-4 py-2.5 font-semibold whitespace-nowrap hover:bg-white/10 border-r border-white/10"
+          >
             ☰ All Categories
           </button>
           {categories.map(cat => (
-            <button key={cat} className="px-3 py-2.5 whitespace-nowrap hover:bg-white/10 transition-colors text-gray-200">
+            <button
+              key={cat}
+              onClick={() => handleCategoryClick(cat)}
+              className="px-3 py-2.5 whitespace-nowrap hover:bg-white/10 transition-colors text-gray-200"
+            >
               {cat}
             </button>
           ))}
-          <Link to="/vendors" className="ml-auto px-4 py-2.5 text-yellow-400 font-semibold whitespace-nowrap hover:underline">
-            Become a Seller →
-          </Link>
+          {(!user || profile?.role === 'buyer') && (
+            <Link to="/vendors" className="ml-auto px-4 py-2.5 text-yellow-400 font-semibold whitespace-nowrap hover:underline">
+              Become a Seller →
+            </Link>
+          )}
         </div>
       </div>
     </header>
