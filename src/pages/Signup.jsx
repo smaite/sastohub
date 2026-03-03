@@ -43,23 +43,23 @@ export default function Signup() {
   return (
     <div className="h-screen flex items-stretch bg-white font-sans text-secondary overflow-hidden">
       {/* Left Side: Decorative & Info */}
-      <div className="hidden lg:flex w-1/2 bg-[#0a0a0a] relative overflow-hidden flex-col justify-between p-12 xl:p-16">
+      <div className="hidden lg:flex w-1/2 bg-[#0a0a0a] relative overflow-hidden flex-col justify-between p-12 xl:p-16 text-white">
         <div className="absolute top-0 right-0 w-full h-full opacity-20 pointer-events-none">
           <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] rounded-full bg-primary blur-[100px]"></div>
           <div className="absolute bottom-[-10%] left-[-10%] w-[300px] h-[300px] rounded-full bg-blue-600 blur-[80px] opacity-40"></div>
         </div>
 
         <div className="relative z-10">
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-primary/20 text-secondary">
+          <Link to="/" className="flex items-center gap-3 group text-white">
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-primary/20">
               <ShoppingBag className="text-white h-6 w-6" />
             </div>
-            <span className="text-2xl font-black text-white tracking-tighter">SastoHub</span>
+            <span className="text-2xl font-black tracking-tighter uppercase italic">SastoHub</span>
           </Link>
         </div>
 
         <div className="relative z-10">
-          <h1 className="text-5xl xl:text-6xl font-black text-white leading-[1.1] mb-6 italic uppercase tracking-tighter">
+          <h1 className="text-5xl xl:text-6xl font-black leading-[1.1] mb-6 italic uppercase tracking-tighter">
             Join the <br />
             <span className="text-primary text-glow">Evolution</span> <br />
             of Trade.
@@ -75,12 +75,6 @@ export default function Signup() {
               </div>
               <span className="text-xs font-black uppercase tracking-[0.2em]">Personalized Feed</span>
             </div>
-            <div className="flex items-center gap-4 text-white/90">
-              <div className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 backdrop-blur-md">
-                <ShieldCheck className="h-4 w-4 text-primary" />
-              </div>
-              <span className="text-xs font-black uppercase tracking-[0.2em]">Buyer Protection</span>
-            </div>
           </div>
         </div>
 
@@ -90,25 +84,25 @@ export default function Signup() {
       </div>
 
       {/* Right Side: Signup Form (Independently Scrollable) */}
-      <div className="flex-1 flex flex-col p-6 md:p-12 lg:p-16 bg-white overflow-y-auto">
+      <div className="flex-1 flex flex-col p-6 md:p-12 lg:p-16 bg-white overflow-y-auto scrollbar-hide text-secondary">
         <div className="w-full max-w-md mx-auto my-auto py-8">
           {/* Mobile Logo */}
-          <div className="lg:hidden mb-8 text-secondary">
+          <div className="lg:hidden mb-12">
             <Link to="/" className="flex items-center gap-2">
               <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
                 <ShoppingBag className="text-white h-6 w-6" />
               </div>
-              <span className="text-2xl font-black tracking-tighter">SastoHub</span>
+              <span className="text-2xl font-black tracking-tighter uppercase italic">SastoHub</span>
             </Link>
           </div>
 
-          <div className="space-y-2 mb-8">
+          <div className="space-y-2 mb-10">
             <h2 className="text-3xl md:text-4xl font-black uppercase italic tracking-tighter">Create Account</h2>
             <p className="text-gray-400 font-bold text-[10px] tracking-widest uppercase">Start your digital shopping journey</p>
           </div>
 
           {error && (
-            <div className="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-xl flex items-center gap-4 text-xs font-bold mb-6 shadow-sm">
+            <div className="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-xl flex items-center gap-4 text-xs font-bold mb-8 shadow-sm">
               {error}
             </div>
           )}
@@ -194,7 +188,7 @@ export default function Signup() {
             </button>
           </div>
 
-          <p className="text-center text-[10px] font-black text-gray-400 uppercase tracking-widest mt-8">
+          <p className="text-center text-[10px] font-black text-gray-400 uppercase tracking-widest mt-8 text-secondary">
             Already registered?{' '}
             <Link to="/login" className="text-primary hover:underline italic">Sign in here</Link>
           </p>

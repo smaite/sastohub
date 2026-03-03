@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
-import { Users, Store, ShoppingBag, CheckCircle, XCircle, Clock, Package, Eye, X, ExternalLink, MapPin, CreditCard, FileText } from 'lucide-react';
+import { Users, Store, ShoppingBag, Clock, Package, Eye, X, ExternalLink, MapPin, CreditCard, FileText, CheckCircle, XCircle } from 'lucide-react';
 
 const tabs = ['Vendors', 'Users', 'Orders', 'Categories'];
 
@@ -89,7 +89,7 @@ function ReviewModal({ vendor, onClose, onAction, actionLoading }) {
   if (!vendor) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md text-secondary">
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col border border-white/20">
         <div className="px-8 py-6 border-b flex items-center justify-between bg-gray-50/50">
           <div>
@@ -126,7 +126,7 @@ function ReviewModal({ vendor, onClose, onAction, actionLoading }) {
             </div>
           </div>
 
-          <div className="pt-8 border-t">
+          <div className="pt-8 border-t text-secondary">
             <h3 className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-6">
               <MapPin className="h-4 w-4 text-primary" /> 2. Operations & Contact
             </h3>
@@ -154,7 +154,7 @@ function ReviewModal({ vendor, onClose, onAction, actionLoading }) {
             </div>
           </div>
 
-          <div className="pt-8 border-t">
+          <div className="pt-8 border-t text-secondary">
             <h3 className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-6">
               <CreditCard className="h-4 w-4 text-primary" /> 3. Banking Credentials
             </h3>
@@ -170,7 +170,7 @@ function ReviewModal({ vendor, onClose, onAction, actionLoading }) {
             </div>
           </div>
 
-          <div className="pt-8 border-t">
+          <div className="pt-8 border-t text-secondary">
             <h3 className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-6">
               <FileText className="h-4 w-4 text-primary" /> 4. Legal Documentation
             </h3>
@@ -240,24 +240,31 @@ export default function AdminDashboard() {
   async function fetchAll() {
     setLoading(true);
     try {
-      const [{ data: v }, { data: u }, { data: o }, { data: c }] = await Promise.all([
+      const [vRes, uRes, oRes, cRes] = await Promise.all([
         supabase.from('vendors').select('*, profiles(full_name)').order('created_at', { ascending: false }),
         supabase.from('profiles').select('*').order('created_at', { ascending: false }),
         supabase.from('orders').select('*, profiles(full_name)').order('created_at', { ascending: false }),
         supabase.from('categories').select('*').order('name', { ascending: true }),
       ]);
-      setVendors(v || []);
-      setUsers(u || []);
-      setOrders(o || []);
-      setCategories(c || []);
+
+      const v = vRes.data || [];
+      const u = uRes.data || [];
+      const o = oRes.data || [];
+      const c = cRes.data || [];
+
+      setVendors(v);
+      setUsers(u);
+      setOrders(o);
+      setCategories(c);
+
       setStats({
-        vendors: (v || []).length,
-        users: (u || []).length,
-        orders: (o || []).length,
-        pending: (v || []).filter(x => x.status === 'pending').length,
+        vendors: v.length,
+        users: u.length,
+        orders: o.length,
+        pending: v.filter(x => x.status === 'pending').length,
       });
     } catch (err) {
-      console.error('Fetch All error:', err);
+      console.error('Admin Fetch Error:', err);
     } finally {
       setLoading(false);
     }
@@ -296,7 +303,7 @@ export default function AdminDashboard() {
           <h1 className='text-4xl font-black italic uppercase tracking-tighter leading-none'>Platform Control</h1>
           <p className='text-gray-400 font-bold text-[10px] mt-2 uppercase tracking-[0.3em]'>Super Administrator Level Access</p>
         </div>
-        <button onClick={fetchAll} className="p-2.5 bg-gray-50 border-2 border-gray-100 rounded-xl hover:bg-gray-100 transition-all">
+        <button onClick={fetchAll} className="p-2.5 bg-gray-50 border-2 border-gray-100 rounded-xl hover:bg-gray-100 transition-all text-secondary">
            <Clock className="h-5 w-5 text-gray-400" />
         </button>
       </div>
@@ -307,20 +314,20 @@ export default function AdminDashboard() {
           <p className='text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2'>Vendors</p>
           <p className='text-4xl font-black italic'>{stats.vendors}</p>
         </div>
-        <div className='bg-white rounded-3xl border shadow-sm p-6 relative overflow-hidden group'>
+        <div className='bg-white rounded-3xl border shadow-sm p-6 relative overflow-hidden group text-yellow-500'>
           <div className="absolute -right-4 -bottom-4 text-yellow-500 opacity-[0.03] transform rotate-12 group-hover:scale-110 transition-transform"><Clock className="h-32 w-32" /></div>
           <p className='text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2'>Pending</p>
-          <p className='text-4xl font-black italic text-yellow-500'>{stats.pending}</p>
+          <p className='text-4xl font-black italic'>{stats.pending}</p>
         </div>
-        <div className='bg-white rounded-3xl border shadow-sm p-6 relative overflow-hidden group'>
+        <div className='bg-white rounded-3xl border shadow-sm p-6 relative overflow-hidden group text-blue-500'>
           <div className="absolute -right-4 -bottom-4 text-blue-500 opacity-[0.03] transform rotate-12 group-hover:scale-110 transition-transform"><Users className="h-32 w-32" /></div>
           <p className='text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2'>Users</p>
-          <p className='text-4xl font-black italic text-blue-500'>{stats.users}</p>
+          <p className='text-4xl font-black italic'>{stats.users}</p>
         </div>
-        <div className='bg-white rounded-3xl border shadow-sm p-6 relative overflow-hidden group'>
+        <div className='bg-white rounded-3xl border shadow-sm p-6 relative overflow-hidden group text-green-500'>
           <div className="absolute -right-4 -bottom-4 text-green-500 opacity-[0.03] transform rotate-12 group-hover:scale-110 transition-transform"><ShoppingBag className="h-32 w-32" /></div>
           <p className='text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2'>Orders</p>
-          <p className='text-4xl font-black italic text-green-500'>{stats.orders}</p>
+          <p className='text-4xl font-black italic'>{stats.orders}</p>
         </div>
       </div>
 
@@ -352,16 +359,16 @@ export default function AdminDashboard() {
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 text-right'>Action</th>
                 </tr>
               </thead>
-              <tbody className='divide-y'>
+              <tbody className='divide-y text-secondary'>
                 {vendors.map(v => (
-                  <tr key={v.id} className='hover:bg-gray-50/50 transition-colors group text-secondary'>
+                  <tr key={v.id} className='hover:bg-gray-50/50 transition-colors group'>
                     <td className='px-8 py-6'>
                       <p className='font-black text-sm group-hover:text-primary transition-colors'>{v.business_name}</p>
                       <p className='text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5'>{v.city}, {v.state}</p>
                     </td>
                     <td className='px-8 py-6'>
                       <p className="text-sm font-bold text-gray-600">{v.profiles?.full_name || 'N/A'}</p>
-                      <p className="text-[10px] text-gray-400 font-mono italic">UID: {v.owner_id?.slice(0,8)}</p>
+                      <p className="text-[10px] text-gray-400 font-mono italic uppercase">UID: {v.owner_id?.slice(0,8)}</p>
                     </td>
                     <td className='px-8 py-6 text-[11px] font-black text-gray-400 font-mono'>{new Date(v.created_at).toLocaleDateString()}</td>
                     <td className='px-8 py-6'><StatusBadge status={v.status} /></td>
@@ -397,9 +404,9 @@ export default function AdminDashboard() {
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 text-right'>Privilege</th>
                 </tr>
               </thead>
-              <tbody className='divide-y'>
+              <tbody className='divide-y text-secondary'>
                 {users.map(u => (
-                  <tr key={u.id} className='hover:bg-gray-50/50 transition-colors text-secondary'>
+                  <tr key={u.id} className='hover:bg-gray-50/50 transition-colors'>
                     <td className='px-8 py-6'>
                       <p className='font-black text-sm'>{u.full_name || 'Anonymous'}</p>
                       <p className="text-[9px] font-mono text-gray-400 uppercase">{u.id}</p>
@@ -411,7 +418,7 @@ export default function AdminDashboard() {
                         value={u.role || 'buyer'}
                         onChange={(e) => updateUserRole(u.id, e.target.value)}
                         disabled={actionLoading === u.id}
-                        className='text-[9px] font-black uppercase tracking-[0.2em] border-2 border-gray-100 rounded-xl px-4 py-2.5 outline-none focus:border-primary cursor-pointer disabled:opacity-50 transition-all appearance-none bg-white'
+                        className='text-[9px] font-black uppercase tracking-[0.2em] border-2 border-gray-100 rounded-xl px-4 py-2.5 outline-none focus:border-primary cursor-pointer disabled:opacity-50 transition-all appearance-none bg-white text-secondary'
                       >
                         <option value='buyer'>Buyer</option>
                         <option value='seller'>Seller</option>
@@ -438,9 +445,9 @@ export default function AdminDashboard() {
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Date</th>
                 </tr>
               </thead>
-              <tbody className='divide-y'>
+              <tbody className='divide-y text-secondary'>
                 {orders.map(o => (
-                  <tr key={o.id} className='hover:bg-gray-50 transition-colors text-secondary'>
+                  <tr key={o.id} className='hover:bg-gray-50 transition-colors'>
                     <td className='px-8 py-6 font-mono text-[10px] font-black text-gray-400'>#{o.id.slice(0, 10).toUpperCase()}</td>
                     <td className='px-8 py-6 text-sm font-black'>{o.profiles?.full_name || 'Guest'}</td>
                     <td className='px-8 py-6 text-sm font-black text-primary italic'>Rs. {o.total_amount}</td>
