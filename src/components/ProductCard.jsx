@@ -1,12 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cartStore';
+import { supabase } from '../lib/supabase';
 import { Heart, ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function ProductCard({ product, layout = 'grid' }) {
+  const { user } = useAuthStore();
   const { addItem } = useCartStore();
   const [isHovered, setIsHovered] = useState(false);
+  const [isWished, setIsWished] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) checkWishlist();
+  }, [user, product.id]);
+
+  async function checkWishlist() {
+    const { data } = await supabase
+      .from('wishlists')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('product_id', product.id)
+      .maybeSingle();
+    setIsWished(!!data);
+  }
+
+  async function toggleWishlist(e) {
+    e.stopPropagation();
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    if (isWished) {
+      await supabase.from('wishlists').delete().eq('user_id', user.id).eq('product_id', product.id);
+      setIsWished(false);
+    } else {
+      await supabase.from('wishlists').insert({ user_id: user.id, product_id: product.id });
+      setIsWished(true);
+    }
+  }
 
   const handleNavigate = () => {
     navigate(`/product/${product.slug}`);
@@ -29,8 +63,13 @@ export default function ProductCard({ product, layout = 'grid' }) {
             <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">No Image</div>
           )}
 
-          <button className="absolute top-2 left-2 p-1.5 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-primary hover:text-white transition-colors opacity-0 group-hover:opacity-100">
-            <Heart className="w-4 h-4" />
+          <button
+            onClick={toggleWishlist}
+            className={`absolute top-2 left-2 p-1.5 rounded-full shadow-sm transition-colors opacity-0 group-hover:opacity-100 ${
+              isWished ? 'bg-primary text-white opacity-100' : 'bg-white/80 backdrop-blur-sm text-gray-600 hover:bg-primary hover:text-white'
+            }`}
+          >
+            <Heart className={`w-4 h-4 ${isWished ? 'fill-current' : ''}`} />
           </button>
         </div>
 
@@ -63,8 +102,13 @@ export default function ProductCard({ product, layout = 'grid' }) {
               <ShoppingCart className="w-4 h-4" />
               Add to Cart
             </button>
-            <button className="p-2 border rounded-xl hover:bg-gray-50 text-gray-400 transition-colors">
-              <Heart className="w-5 h-5" />
+            <button
+              onClick={toggleWishlist}
+              className={`p-2 border rounded-xl transition-colors ${
+                isWished ? 'bg-primary/10 border-primary text-primary' : 'text-gray-400 hover:bg-gray-50'
+              }`}
+            >
+              <Heart className={`w-5 h-5 ${isWished ? 'fill-current' : ''}`} />
             </button>
           </div>
         </div>
@@ -90,8 +134,13 @@ export default function ProductCard({ product, layout = 'grid' }) {
           <div className="w-full h-full flex items-center justify-center text-gray-400">No Image</div>
         )}
 
-        <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-primary hover:text-white transition-colors z-10">
-          <Heart className="w-4 h-4" />
+        <button
+          onClick={toggleWishlist}
+          className={`absolute top-3 right-3 p-2 rounded-full shadow-sm transition-colors z-10 ${
+            isWished ? 'bg-primary text-white' : 'bg-white/80 backdrop-blur-sm text-gray-600 hover:bg-primary hover:text-white'
+          }`}
+        >
+          <Heart className={`w-4 h-4 ${isWished ? 'fill-current' : ''}`} />
         </button>
 
         <div className={`absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/20 to-transparent transition-all duration-300 transform ${isHovered ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}>

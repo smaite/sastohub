@@ -13,6 +13,7 @@ import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
 import Orders from './pages/Orders';
 import OrderSuccess from './pages/OrderSuccess';
+import Wishlist from './pages/Wishlist';
 import VendorDashboard from './pages/VendorDashboard';
 import VendorOnboarding from './pages/VendorOnboarding';
 import AddProduct from './pages/AddProduct';
@@ -114,6 +115,7 @@ function App() {
           <Route path="product/:slug" element={<ProductDetail />} />
           <Route path="orders" element={<Orders />} />
           <Route path="order-success" element={<OrderSuccess />} />
+          <Route path="wishlist" element={<Wishlist />} />
 
           {/* Vendor Routes */}
           <Route path="vendor">
