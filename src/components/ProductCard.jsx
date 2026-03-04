@@ -65,9 +65,8 @@ export default function ProductCard({ product, layout = 'grid' }) {
 
           <button
             onClick={toggleWishlist}
-            className={`absolute top-2 left-2 p-1.5 rounded-full shadow-sm transition-colors opacity-0 group-hover:opacity-100 ${
-              isWished ? 'bg-primary text-white opacity-100' : 'bg-white/80 backdrop-blur-sm text-gray-600 hover:bg-primary hover:text-white'
-            }`}
+            className={`absolute top-2 left-2 p-1.5 rounded-full shadow-sm transition-colors opacity-0 group-hover:opacity-100 ${isWished ? 'bg-primary text-white opacity-100' : 'bg-white/80 backdrop-blur-sm text-gray-600 hover:bg-primary hover:text-white'
+              }`}
           >
             <Heart className={`w-4 h-4 ${isWished ? 'fill-current' : ''}`} />
           </button>
@@ -76,9 +75,7 @@ export default function ProductCard({ product, layout = 'grid' }) {
         <div className="p-5 flex flex-col flex-1 min-w-0">
           <div className="flex justify-between items-start gap-4">
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] text-gray-400 mb-1 uppercase tracking-widest font-black">
-                {product.vendors?.business_name || 'Generic Store'}
-              </p>
+
               <h3 className="font-bold text-secondary truncate text-lg group-hover:text-primary transition-colors">{product.name}</h3>
               <p className="text-sm text-gray-500 line-clamp-2 mt-1">{product.description}</p>
             </div>
@@ -92,7 +89,7 @@ export default function ProductCard({ product, layout = 'grid' }) {
           </div>
 
           <div className="mt-auto flex items-center gap-3">
-             <button
+            <button
               onClick={(e) => {
                 e.stopPropagation();
                 addItem(product);
@@ -104,9 +101,8 @@ export default function ProductCard({ product, layout = 'grid' }) {
             </button>
             <button
               onClick={toggleWishlist}
-              className={`p-2 border rounded-xl transition-colors ${
-                isWished ? 'bg-primary/10 border-primary text-primary' : 'text-gray-400 hover:bg-gray-50'
-              }`}
+              className={`p-2 border rounded-xl transition-colors ${isWished ? 'bg-primary/10 border-primary text-primary' : 'text-gray-400 hover:bg-gray-50'
+                }`}
             >
               <Heart className={`w-5 h-5 ${isWished ? 'fill-current' : ''}`} />
             </button>
@@ -136,9 +132,8 @@ export default function ProductCard({ product, layout = 'grid' }) {
 
         <button
           onClick={toggleWishlist}
-          className={`absolute top-3 right-3 p-2 rounded-full shadow-sm transition-colors z-10 ${
-            isWished ? 'bg-primary text-white' : 'bg-white/80 backdrop-blur-sm text-gray-600 hover:bg-primary hover:text-white'
-          }`}
+          className={`absolute top-3 right-3 p-2 rounded-full shadow-sm transition-colors z-10 ${isWished ? 'bg-primary text-white' : 'bg-white/80 backdrop-blur-sm text-gray-600 hover:bg-primary hover:text-white'
+            }`}
         >
           <Heart className={`w-4 h-4 ${isWished ? 'fill-current' : ''}`} />
         </button>
@@ -158,9 +153,7 @@ export default function ProductCard({ product, layout = 'grid' }) {
       </div>
 
       <div className="p-4 flex flex-col flex-1">
-        <p className="text-[10px] text-gray-400 mb-1.5 uppercase tracking-widest font-black">
-          {product.vendors?.business_name || 'Generic Store'}
-        </p>
+
         <h3 className="font-bold text-secondary line-clamp-2 mb-2 flex-1 text-sm group-hover:text-primary transition-colors">{product.name}</h3>
         <div className="flex items-baseline gap-2">
           <p className="text-primary font-black text-base">Rs. {product.price}</p>

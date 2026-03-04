@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
-import { Users, Store, ShoppingBag, Clock, Package, Eye, X, ExternalLink, MapPin, CreditCard, FileText, CheckCircle, XCircle } from 'lucide-react';
+import { Users, Store, ShoppingBag, Clock, Package, Eye, X, ExternalLink, MapPin, CreditCard, FileText, CheckCircle, XCircle, Upload, Image } from 'lucide-react';
 
-const tabs = ['Vendors', 'Users', 'Orders', 'Categories'];
+const tabs = ['Vendors', 'Users', 'Orders', 'Products', 'Categories', 'Settings'];
 
 function StatusBadge({ status }) {
   const map = {
@@ -231,6 +231,9 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState('');
   const [selectedVendor, setSelectedVendor] = useState(null);
+  const [paymentQrUrl, setPaymentQrUrl] = useState('');
+  const [qrUploading, setQrUploading] = useState(false);
+  const [allProducts, setAllProducts] = useState([]);
 
   useEffect(() => {
     if (profile && profile.role !== 'admin') { navigate('/'); return; }
@@ -240,11 +243,13 @@ export default function AdminDashboard() {
   async function fetchAll() {
     setLoading(true);
     try {
-      const [vRes, uRes, oRes, cRes] = await Promise.all([
+      const [vRes, uRes, oRes, cRes, sRes, pRes] = await Promise.all([
         supabase.from('vendors').select('*, profiles(full_name)').order('created_at', { ascending: false }),
         supabase.from('profiles').select('*').order('created_at', { ascending: false }),
         supabase.from('orders').select('*, profiles(full_name)').order('created_at', { ascending: false }),
         supabase.from('categories').select('*').order('name', { ascending: true }),
+        supabase.from('site_settings').select('*').eq('key', 'payment_qr_url').maybeSingle(),
+        supabase.from('products').select('*, vendors(business_name), categories(name)').order('created_at', { ascending: false }),
       ]);
 
       const v = vRes.data || [];
@@ -256,6 +261,8 @@ export default function AdminDashboard() {
       setUsers(u);
       setOrders(o);
       setCategories(c);
+      setAllProducts(pRes.data || []);
+      if (sRes.data?.value) setPaymentQrUrl(sRes.data.value);
 
       setStats({
         vendors: v.length,
@@ -304,7 +311,7 @@ export default function AdminDashboard() {
           <p className='text-gray-400 font-bold text-[10px] mt-2 uppercase tracking-[0.3em]'>Super Administrator Level Access</p>
         </div>
         <button onClick={fetchAll} className="p-2.5 bg-gray-50 border-2 border-gray-100 rounded-xl hover:bg-gray-100 transition-all text-secondary">
-           <Clock className="h-5 w-5 text-gray-400" />
+          <Clock className="h-5 w-5 text-gray-400" />
         </button>
       </div>
 
@@ -337,9 +344,8 @@ export default function AdminDashboard() {
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`px-10 py-6 font-black text-[10px] uppercase tracking-[0.2em] transition-all relative whitespace-nowrap ${
-                tab === t ? 'text-primary' : 'text-gray-400 hover:text-secondary'
-              }`}
+              className={`px-10 py-6 font-black text-[10px] uppercase tracking-[0.2em] transition-all relative whitespace-nowrap ${tab === t ? 'text-primary' : 'text-gray-400 hover:text-secondary'
+                }`}
             >
               {t}
               {tab === t && <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-t-full" />}
@@ -368,7 +374,7 @@ export default function AdminDashboard() {
                     </td>
                     <td className='px-8 py-6'>
                       <p className="text-sm font-bold text-gray-600">{v.profiles?.full_name || 'N/A'}</p>
-                      <p className="text-[10px] text-gray-400 font-mono italic uppercase">UID: {v.owner_id?.slice(0,8)}</p>
+                      <p className="text-[10px] text-gray-400 font-mono italic uppercase">UID: {v.owner_id?.slice(0, 8)}</p>
                     </td>
                     <td className='px-8 py-6 text-[11px] font-black text-gray-400 font-mono'>{new Date(v.created_at).toLocaleDateString()}</td>
                     <td className='px-8 py-6'><StatusBadge status={v.status} /></td>
@@ -441,6 +447,7 @@ export default function AdminDashboard() {
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Customer</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Valuation</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Payment</th>
+                  <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Reference</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Progress</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Date</th>
                 </tr>
@@ -452,11 +459,69 @@ export default function AdminDashboard() {
                     <td className='px-8 py-6 text-sm font-black'>{o.profiles?.full_name || 'Guest'}</td>
                     <td className='px-8 py-6 text-sm font-black text-primary italic'>Rs. {o.total_amount}</td>
                     <td className='px-8 py-6'><span className='text-[9px] font-black uppercase tracking-widest bg-gray-100 px-2 py-1 rounded-lg text-gray-500 italic'>{o.payment_method}</span></td>
+                    <td className='px-8 py-6 text-[10px] font-mono font-bold text-gray-500'>{o.payment_reference || <span className='italic text-gray-300'>—</span>}</td>
                     <td className='px-8 py-6'><StatusBadge status={o.status} /></td>
                     <td className='px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-widest'>{new Date(o.created_at).toLocaleDateString()}</td>
                   </tr>
                 ))}
-                {orders.length === 0 && <tr><td colSpan='6' className='px-8 py-20 text-center text-gray-400 text-[10px] font-black uppercase tracking-[0.3em] opacity-30'>Zero transaction history</td></tr>}
+                {orders.length === 0 && <tr><td colSpan='7' className='px-8 py-20 text-center text-gray-400 text-[10px] font-black uppercase tracking-[0.3em] opacity-30'>Zero transaction history</td></tr>}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {tab === 'Products' && (
+          <div className="overflow-x-auto">
+            <table className='w-full text-left'>
+              <thead>
+                <tr className="border-b bg-gray-50/50 text-secondary">
+                  <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Product</th>
+                  <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Vendor</th>
+                  <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Category</th>
+                  <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Price</th>
+                  <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Status</th>
+                  <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 text-right'>Action</th>
+                </tr>
+              </thead>
+              <tbody className='divide-y text-secondary'>
+                {[...allProducts].sort((a, b) => (a.approval_status === 'pending' ? -1 : 1) - (b.approval_status === 'pending' ? -1 : 1)).map(p => (
+                  <tr key={p.id} className={`hover:bg-gray-50/50 transition-colors ${p.approval_status === 'pending' ? 'bg-yellow-50/50' : ''}`}>
+                    <td className='px-8 py-6'>
+                      <p className='font-black text-sm'>{p.name}</p>
+                      <p className='text-[10px] text-gray-400 font-mono'>Stock: {p.stock_quantity}</p>
+                    </td>
+                    <td className='px-8 py-6 text-sm font-bold text-gray-600'>{p.vendors?.business_name || 'N/A'}</td>
+                    <td className='px-8 py-6 text-sm font-medium text-gray-500'>{p.categories?.name || '—'}</td>
+                    <td className='px-8 py-6 text-sm font-black text-primary italic'>Rs. {p.price}</td>
+                    <td className='px-8 py-6'>
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${p.approval_status === 'approved' ? 'bg-green-100 text-green-700' :
+                          p.approval_status === 'rejected' ? 'bg-red-100 text-red-700' :
+                            'bg-yellow-100 text-yellow-700'
+                        }`}>{p.approval_status || 'pending'}</span>
+                    </td>
+                    <td className='px-8 py-6 text-right flex items-center justify-end gap-2'>
+                      {p.approval_status !== 'approved' && (
+                        <button
+                          onClick={async () => {
+                            await supabase.from('products').update({ approval_status: 'approved' }).eq('id', p.id);
+                            fetchAll();
+                          }}
+                          className='px-3 py-1.5 bg-green-500 text-white rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-green-600'
+                        >Approve</button>
+                      )}
+                      {p.approval_status !== 'rejected' && (
+                        <button
+                          onClick={async () => {
+                            await supabase.from('products').update({ approval_status: 'rejected' }).eq('id', p.id);
+                            fetchAll();
+                          }}
+                          className='px-3 py-1.5 bg-red-100 text-red-600 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-red-200'
+                        >Reject</button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+                {allProducts.length === 0 && <tr><td colSpan='6' className='px-8 py-20 text-center text-gray-400 text-[10px] font-black uppercase tracking-[0.3em] opacity-30'>No products yet</td></tr>}
               </tbody>
             </table>
           </div>
@@ -464,6 +529,69 @@ export default function AdminDashboard() {
 
         {tab === 'Categories' && (
           <CategoryManager categories={categories} onRefresh={fetchAll} />
+        )}
+
+        {tab === 'Settings' && (
+          <div className="p-6">
+            <h2 className="text-lg font-black uppercase italic tracking-tight mb-6">Payment QR Code</h2>
+            <p className="text-sm text-gray-500 mb-4">Upload your eSewa/bank QR code. Customers will see this during checkout to scan and pay.</p>
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              <div className="flex-1">
+                <label className="flex items-center justify-center w-full h-48 border-2 border-dashed rounded-2xl cursor-pointer hover:border-primary hover:bg-red-50/30 transition-all group">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      setQrUploading(true);
+                      try {
+                        const ext = file.name.split('.').pop();
+                        const path = `payment-qr/qr.${ext}`;
+                        const { error: upErr } = await supabase.storage.from('site-assets').upload(path, file, { upsert: true });
+                        if (upErr) throw upErr;
+                        const { data: urlData } = supabase.storage.from('site-assets').getPublicUrl(path);
+                        const url = urlData.publicUrl;
+                        await supabase.from('site_settings').upsert({ key: 'payment_qr_url', value: url }, { onConflict: 'key' });
+                        setPaymentQrUrl(url);
+                      } catch (err) {
+                        alert('Upload failed: ' + err.message);
+                      } finally {
+                        setQrUploading(false);
+                      }
+                    }}
+                  />
+                  <div className="text-center">
+                    <Upload className="h-10 w-10 mx-auto text-gray-300 group-hover:text-primary transition-colors mb-2" />
+                    <p className="text-xs font-bold text-gray-400 group-hover:text-primary uppercase tracking-widest">
+                      {qrUploading ? 'Uploading...' : 'Click to Upload QR'}
+                    </p>
+                  </div>
+                </label>
+              </div>
+              <div className="flex-1">
+                {paymentQrUrl ? (
+                  <div className="text-center">
+                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3">Current QR Code</p>
+                    <div className="inline-block bg-white p-4 rounded-2xl border-2 border-gray-100 shadow-sm">
+                      <img src={paymentQrUrl} alt="Payment QR" className="w-48 h-48 object-contain" />
+                    </div>
+                    <p className="text-xs text-green-600 font-bold mt-3 flex items-center justify-center gap-1">
+                      <CheckCircle className="h-3.5 w-3.5" /> Active
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center h-48 bg-gray-50 rounded-2xl border border-gray-100">
+                    <div className="text-center">
+                      <Image className="h-12 w-12 mx-auto text-gray-200 mb-2" />
+                      <p className="text-xs text-gray-400 font-bold">No QR uploaded yet</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         )}
       </div>
 

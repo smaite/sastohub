@@ -26,7 +26,8 @@ export default function Products() {
       let query = supabase
         .from('products')
         .select('*, vendors(business_name)')
-        .eq('is_published', true);
+        .eq('is_published', true)
+        .eq('approval_status', 'approved');
 
       if (categoryQuery) {
         // If it's a UUID, use eq, otherwise use ILIKE on name through a join or just handle name mapping

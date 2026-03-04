@@ -82,12 +82,13 @@ export default function AddProduct() {
           stock_quantity: parseInt(formData.stock_quantity),
           category_id: formData.category_id || null,
           images: imageUrl ? [imageUrl] : [],
-          is_published: formData.is_published
+          is_published: formData.is_published,
+          approval_status: 'pending',
         });
 
       if (insertError) throw insertError;
 
-      alert('Product added successfully!');
+      alert('Product submitted! It will appear on the store once an admin approves it.');
       navigate('/vendor/dashboard');
     } catch (error) {
       alert(error.message);
@@ -107,7 +108,7 @@ export default function AddProduct() {
             type="text"
             required
             value={formData.name}
-            onChange={(e) => setFormData({...formData, name: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary outline-none"
           />
         </div>
@@ -117,7 +118,7 @@ export default function AddProduct() {
           <textarea
             required
             value={formData.description}
-            onChange={(e) => setFormData({...formData, description: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary outline-none h-32"
           />
         </div>
@@ -128,7 +129,7 @@ export default function AddProduct() {
             type="number"
             required
             value={formData.price}
-            onChange={(e) => setFormData({...formData, price: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
             className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary outline-none"
           />
         </div>
@@ -139,7 +140,7 @@ export default function AddProduct() {
             type="number"
             required
             value={formData.stock_quantity}
-            onChange={(e) => setFormData({...formData, stock_quantity: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, stock_quantity: e.target.value })}
             className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary outline-none"
           />
         </div>
@@ -148,7 +149,7 @@ export default function AddProduct() {
           <label className="block text-sm font-medium mb-1">Category</label>
           <select
             value={formData.category_id}
-            onChange={(e) => setFormData({...formData, category_id: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
             className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary outline-none"
           >
             <option value="">Select Category</option>
@@ -163,7 +164,7 @@ export default function AddProduct() {
             type="checkbox"
             id="published"
             checked={formData.is_published}
-            onChange={(e) => setFormData({...formData, is_published: e.target.checked})}
+            onChange={(e) => setFormData({ ...formData, is_published: e.target.checked })}
             className="w-4 h-4 text-primary focus:ring-primary border-gray-300 rounded"
           />
           <label htmlFor="published" className="text-sm font-medium">Publish immediately</label>
@@ -175,7 +176,7 @@ export default function AddProduct() {
               <img src={preview} alt="Preview" className="max-h-48 rounded" />
               <button
                 type="button"
-                onClick={() => {setImageFile(null); setPreview(null);}}
+                onClick={() => { setImageFile(null); setPreview(null); }}
                 className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
               >
                 <X className="h-4 w-4" />

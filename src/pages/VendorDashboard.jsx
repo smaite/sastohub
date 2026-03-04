@@ -144,18 +144,18 @@ export default function VendorDashboard() {
       </div>
 
       {/* Stats */}
-      <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-10'>
-        <div className='bg-white p-6 rounded-2xl border shadow-sm'>
-          <div className='flex items-center gap-3 text-primary mb-3'><Package className='h-5 w-5' /><span className='font-bold text-gray-400 text-xs uppercase tracking-widest'>Total Products</span></div>
-          <p className='text-3xl font-black text-secondary'>{products.length}</p>
+      <div className='grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-10'>
+        <div className='bg-white p-4 md:p-6 rounded-2xl border shadow-sm'>
+          <div className='flex items-center gap-2 md:gap-3 text-primary mb-2 md:mb-3'><Package className='h-4 w-4 md:h-5 md:w-5' /><span className='font-bold text-gray-400 text-[10px] md:text-xs uppercase tracking-widest'>Products</span></div>
+          <p className='text-2xl md:text-3xl font-black text-secondary'>{products.length}</p>
         </div>
-        <div className='bg-white p-6 rounded-2xl border shadow-sm'>
-          <div className='flex items-center gap-3 text-green-600 mb-3'><ShoppingBag className='h-5 w-5' /><span className='font-bold text-gray-400 text-xs uppercase tracking-widest'>Total Sales</span></div>
-          <p className='text-3xl font-black text-secondary'>{orders.length}</p>
+        <div className='bg-white p-4 md:p-6 rounded-2xl border shadow-sm'>
+          <div className='flex items-center gap-2 md:gap-3 text-green-600 mb-2 md:mb-3'><ShoppingBag className='h-4 w-4 md:h-5 md:w-5' /><span className='font-bold text-gray-400 text-[10px] md:text-xs uppercase tracking-widest'>Sales</span></div>
+          <p className='text-2xl md:text-3xl font-black text-secondary'>{orders.length}</p>
         </div>
-        <div className='bg-white p-6 rounded-2xl border shadow-sm'>
-          <div className='flex items-center gap-3 text-blue-600 mb-3'><Clock className='h-5 w-5' /><span className='font-bold text-gray-400 text-xs uppercase tracking-widest'>Account Status</span></div>
-          <span className='inline-block px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold capitalize'>{vendor.status}</span>
+        <div className='bg-white p-4 md:p-6 rounded-2xl border shadow-sm col-span-2 md:col-span-1'>
+          <div className='flex items-center gap-2 md:gap-3 text-blue-600 mb-2 md:mb-3'><Clock className='h-4 w-4 md:h-5 md:w-5' /><span className='font-bold text-gray-400 text-[10px] md:text-xs uppercase tracking-widest'>Status</span></div>
+          <span className='inline-block px-3 py-1 bg-green-100 text-green-700 rounded-full text-[10px] md:text-xs font-bold capitalize'>{vendor.status}</span>
         </div>
       </div>
 

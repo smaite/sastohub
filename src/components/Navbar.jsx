@@ -67,21 +67,41 @@ export default function Navbar() {
 
       {/* Main navbar */}
       <div className="bg-white py-3 px-4 border-b">
-        <div className="max-w-7xl mx-auto flex items-center gap-4">
-          {/* Logo */}
-          <Link to="/" className="flex-shrink-0">
-            <div className="flex flex-col leading-none">
-              <span className="text-2xl font-black text-primary tracking-tight">SastoHub</span>
-              <span className="text-[10px] text-gray-400 tracking-widest uppercase ml-0.5">Nepal's Marketplace</span>
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-3 md:gap-4">
+          <div className="w-full md:w-auto flex items-center justify-between gap-4">
+            {/* Logo */}
+            <Link to="/" className="flex-shrink-0">
+              <div className="flex flex-col leading-none">
+                <span className="text-xl md:text-2xl font-black text-primary tracking-tight">SastoHub</span>
+                <span className="text-[8px] md:text-[10px] text-gray-400 tracking-widest uppercase ml-0.5">Nepal's Marketplace</span>
+              </div>
+            </Link>
+
+            {/* Mobile Actions (Visible only on mobile beside logo) */}
+            <div className="flex md:hidden items-center gap-4">
+              <Link to="/wishlist" className="relative">
+                <Heart className="h-5 w-5 text-gray-600" />
+              </Link>
+              <Link to="/cart" className="relative">
+                <ShoppingCart className="h-5 w-5 text-gray-600" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-primary text-white text-[8px] rounded-full h-3.5 w-3.5 flex items-center justify-center font-bold">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+              <Link to={user ? "/orders" : "/login"}>
+                <User className="h-5 w-5 text-gray-600" />
+              </Link>
             </div>
-          </Link>
+          </div>
 
           {/* Search */}
-          <form onSubmit={handleSearch} className="flex flex-1 max-w-2xl mx-auto">
+          <form onSubmit={handleSearch} className="flex w-full md:flex-1 max-w-2xl mx-auto">
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="border border-r-0 border-gray-300 rounded-l-full px-3 py-2 text-sm bg-gray-50 outline-none text-gray-600 hidden md:block cursor-pointer"
+              className="border border-r-0 border-gray-300 rounded-l-xl md:rounded-l-full px-2 md:px-3 py-2 text-xs bg-gray-50 outline-none text-gray-600 hidden lg:block cursor-pointer"
             >
               <option>All Categories</option>
               {categories.map(c => <option key={c}>{c}</option>)}
@@ -90,16 +110,16 @@ export default function Navbar() {
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder="Search for products, brands and more..."
-              className="flex-1 border border-gray-300 px-4 py-2 text-sm outline-none focus:border-primary"
+              placeholder="Search SastoHub..."
+              className="flex-1 border border-gray-300 rounded-l-xl md:rounded-l-none px-4 py-2 text-sm outline-none focus:border-primary"
             />
-            <button type="submit" className="bg-primary text-white px-5 py-2 rounded-r-full hover:bg-orange-600 transition-colors">
+            <button type="submit" className="bg-primary text-white px-4 md:px-5 py-2 rounded-r-xl md:rounded-r-full hover:bg-orange-600 transition-colors">
               <Search className="h-5 w-5" />
             </button>
           </form>
 
-          {/* Right actions */}
-          <div className="flex items-center gap-5 flex-shrink-0">
+          {/* Right actions (Desktop only) */}
+          <div className="hidden md:flex items-center gap-5 flex-shrink-0">
             {/* Account */}
             {user ? (
               <div className="flex flex-col items-center group relative cursor-pointer">

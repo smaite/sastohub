@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCartStore } from '../store/cartStore';
 import { useAuthStore } from '../store/authStore';
 import { supabase } from '../lib/supabase';
@@ -11,8 +11,15 @@ export default function Checkout() {
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('cod');
+  const [paymentRef, setPaymentRef] = useState('');
+  const [paymentQrUrl, setPaymentQrUrl] = useState('');
   const navigate = useNavigate();
   const total = getTotal();
+
+  useEffect(() => {
+    supabase.from('site_settings').select('value').eq('key', 'payment_qr_url').maybeSingle()
+      .then(({ data }) => { if (data?.value) setPaymentQrUrl(data.value); });
+  }, []);
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
@@ -32,7 +39,8 @@ export default function Checkout() {
           payment_method: paymentMethod,
           shipping_address: { address, phone },
           status: 'pending',
-          payment_status: 'pending'
+          payment_status: 'pending',
+          payment_reference: paymentRef || null,
         })
         .select()
         .single();
@@ -166,11 +174,34 @@ export default function Checkout() {
             {paymentMethod === 'esewa' && (
               <div className="mb-6 p-4 bg-green-50 rounded border border-green-200 text-center">
                 <p className="text-sm font-bold text-green-800 mb-2 font-mono">SCAN TO PAY (eSewa)</p>
-                <div className="bg-white p-2 inline-block rounded mb-2 border">
-                  {/* Placeholder for QR - In real app, user would provide their own merchant QR */}
-                  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=ESewaPaymentToSastoHub" alt="QR Code" />
-                </div>
-                <p className="text-xs text-green-700">Scan this QR code with your eSewa app and place the order after payment.</p>
+                {paymentQrUrl ? (
+                  <>
+                    <div className="bg-white p-2 inline-block rounded mb-2 border">
+                      <img src={paymentQrUrl} alt="QR Code" className="w-40 h-40 object-contain" />
+                    </div>
+                    <div className="mb-3">
+                      <a
+                        href={paymentQrUrl}
+                        download="payment-qr.png"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-green-700 hover:text-green-900 underline"
+                      >
+                        ⬇ Download QR Image
+                      </a>
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-xs text-gray-500 italic mb-2">QR code not available yet. Contact admin.</p>
+                )}
+                <p className="text-xs text-green-700 mb-3">Scan this QR code with your eSewa app, then enter the reference below.</p>
+                <input
+                  type="text"
+                  placeholder="Payment Reference / Transaction ID"
+                  value={paymentRef}
+                  onChange={(e) => setPaymentRef(e.target.value)}
+                  className="w-full p-2 border rounded text-sm focus:ring-1 focus:ring-green-500 outline-none"
+                />
               </div>
             )}
             <button

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cartStore';
@@ -180,9 +180,8 @@ export default function ProductDetail() {
               )}
               <button
                 onClick={toggleWishlist}
-                className={`absolute top-4 right-4 p-3 rounded-full shadow-lg transition-all ${
-                  isWished ? 'bg-primary text-white scale-110' : 'bg-white/80 backdrop-blur-sm hover:bg-primary hover:text-white'
-                }`}
+                className={`absolute top-4 right-4 p-3 rounded-full shadow-lg transition-all ${isWished ? 'bg-primary text-white scale-110' : 'bg-white/80 backdrop-blur-sm hover:bg-primary hover:text-white'
+                  }`}
               >
                 <Heart className={`h-6 w-6 ${isWished ? 'fill-current' : ''}`} />
               </button>
@@ -195,9 +194,8 @@ export default function ProductDetail() {
                   <button
                     key={i}
                     onClick={() => setActiveImage(i)}
-                    className={`w-20 h-20 rounded-xl border-2 overflow-hidden flex-shrink-0 transition-all ${
-                      activeImage === i ? 'border-primary shadow-md' : 'border-transparent opacity-70 hover:opacity-100'
-                    }`}
+                    className={`w-20 h-20 rounded-xl border-2 overflow-hidden flex-shrink-0 transition-all ${activeImage === i ? 'border-primary shadow-md' : 'border-transparent opacity-70 hover:opacity-100'
+                      }`}
                   >
                     <img src={img} alt="" className="w-full h-full object-cover" />
                   </button>
@@ -208,54 +206,54 @@ export default function ProductDetail() {
 
           {/* Center: Info */}
           <div className="lg:col-span-4 space-y-6">
-            <div className="bg-white rounded-3xl border p-6 md:p-8 shadow-sm">
+            <div className="bg-white rounded-3xl border p-4 md:p-8 shadow-sm">
               <div className="space-y-4">
-                <p className="text-primary font-black text-xs uppercase tracking-[0.2em]">
+                <p className="text-primary font-black text-[10px] md:text-xs uppercase tracking-[0.2em]">
                   {product.categories?.name || 'New Arrival'}
                 </p>
-                <h1 className="text-2xl md:text-3xl font-black leading-tight">
+                <h1 className="text-xl md:text-3xl font-black leading-tight">
                   {product.name}
                 </h1>
 
-                <div className="flex items-center gap-4 py-2 border-y border-gray-100">
+                <div className="flex flex-wrap items-center gap-3 md:gap-4 py-2 border-y border-gray-100">
                   <div className="flex items-center gap-1 text-yellow-400">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className={`h-4 w-4 ${i < (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length || 0) ? 'fill-current' : ''}`} />
+                      <Star key={i} className={`h-3 w-3 md:h-4 md:w-4 ${i < (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length || 0) ? 'fill-current' : ''}`} />
                     ))}
                   </div>
-                  <span className="text-xs font-bold text-gray-400 border-l pl-4 uppercase tracking-widest">
+                  <span className="text-[10px] md:text-xs font-bold text-gray-400 border-l pl-3 md:pl-4 uppercase tracking-widest">
                     {reviews.length} Review{reviews.length !== 1 ? 's' : ''}
                   </span>
                 </div>
 
                 <div className="space-y-1">
-                  <div className="flex items-center gap-3">
-                    <span className="text-4xl font-black text-primary italic leading-none">Rs. {product.price}</span>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="text-3xl md:text-4xl font-black text-primary italic leading-none">Rs. {product.price}</span>
                     {product.compare_at_price && (
-                      <span className="text-gray-400 line-through text-lg italic">Rs. {product.compare_at_price}</span>
+                      <span className="text-gray-400 line-through text-base md:text-lg italic">Rs. {product.compare_at_price}</span>
                     )}
                   </div>
-                  <p className="text-[10px] text-green-600 font-black uppercase tracking-widest flex items-center gap-1">
+                  <p className="text-[9px] md:text-[10px] text-green-600 font-black uppercase tracking-widest flex items-center gap-1">
                     <CheckCircle className="h-3 w-3" /> In Stock: {product.stock_quantity} units
                   </p>
                 </div>
 
-                <div className="pt-4 space-y-4">
+                <div className="pt-2 md:pt-4 space-y-4">
                   <div className="flex items-center gap-4">
-                    <span className="text-xs font-black text-gray-400 uppercase tracking-widest">Quantity</span>
+                    <span className="text-[10px] md:text-xs font-black text-gray-400 uppercase tracking-widest">Quantity</span>
                     <div className="flex items-center border-2 border-gray-100 rounded-xl overflow-hidden bg-gray-50">
                       <button
                         onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                        className="p-2 hover:bg-white transition-colors text-gray-400 hover:text-primary"
+                        className="p-1.5 md:p-2 hover:bg-white transition-colors text-gray-400 hover:text-primary"
                       >
-                        <Minus className="h-4 w-4" />
+                        <Minus className="h-3.5 w-3.5 md:h-4 md:w-4" />
                       </button>
-                      <span className="w-10 text-center font-black text-sm">{quantity}</span>
+                      <span className="w-8 md:w-10 text-center font-black text-xs md:text-sm">{quantity}</span>
                       <button
                         onClick={() => setQuantity(q => q + 1)}
-                        className="p-2 hover:bg-white transition-colors text-gray-400 hover:text-primary"
+                        className="p-1.5 md:p-2 hover:bg-white transition-colors text-gray-400 hover:text-primary"
                       >
-                        <Plus className="h-4 w-4" />
+                        <Plus className="h-3.5 w-3.5 md:h-4 md:w-4" />
                       </button>
                     </div>
                   </div>
@@ -263,13 +261,13 @@ export default function ProductDetail() {
                   <div className="flex flex-col gap-3 pt-2">
                     <button
                       onClick={handleAddToCart}
-                      className="w-full bg-primary text-white py-4 rounded-2xl font-black text-base shadow-xl shadow-primary/30 hover:bg-orange-600 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-3"
+                      className="w-full bg-primary text-white py-3.5 md:py-4 rounded-2xl font-black text-sm md:text-base shadow-xl shadow-primary/30 hover:bg-orange-600 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-3"
                     >
-                      <ShoppingCart className="h-5 w-5" /> ADD TO CART
+                      <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" /> ADD TO CART
                     </button>
                     <button
                       onClick={handleBuyNow}
-                      className="w-full bg-secondary text-white py-4 rounded-2xl font-black text-base shadow-xl shadow-secondary/20 hover:bg-black hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-3"
+                      className="w-full bg-secondary text-white py-3.5 md:py-4 rounded-2xl font-black text-sm md:text-base shadow-xl shadow-secondary/20 hover:bg-black hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-3"
                     >
                       BUY IT NOW
                     </button>
@@ -278,9 +276,9 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            <div className="bg-white rounded-3xl border p-6 md:p-8 shadow-sm">
-              <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-4">Description</h3>
-              <div className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap font-medium">
+            <div className="bg-white rounded-3xl border p-5 md:p-8 shadow-sm">
+              <h3 className="text-[10px] md:text-xs font-black uppercase tracking-widest text-gray-400 mb-4">Description</h3>
+              <div className="text-gray-600 text-xs md:text-sm leading-relaxed whitespace-pre-wrap font-medium">
                 {product.description || 'No description provided by the seller.'}
               </div>
             </div>
@@ -309,29 +307,18 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            {/* Vendor Card */}
+            {/* Product Guarantee Card */}
             <div className="bg-white rounded-3xl border p-6 shadow-sm">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-primary/10 text-primary rounded-2xl flex items-center justify-center font-black">
-                  <Store className="h-6 w-6" />
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center font-black">
+                  <ShieldCheck className="h-6 w-6" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[10px] text-gray-400 font-black uppercase tracking-wider">Sold by</p>
-                  <h4 className="font-black truncate">{product.vendors?.business_name}</h4>
+                  <p className="text-[10px] text-gray-400 font-black uppercase tracking-wider">SastoHub Verified</p>
+                  <h4 className="font-black truncate">Quality Guaranteed</h4>
                 </div>
               </div>
-              <button
-                onClick={handleVisitStore}
-                className="w-full py-3 bg-gray-50 hover:bg-gray-100 border border-gray-100 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all"
-              >
-                Visit Store
-              </button>
-              <button
-                onClick={() => alert('Chat feature coming soon!')}
-                className="w-full py-3 bg-primary/5 hover:bg-primary/10 text-primary border border-primary/10 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all mt-3"
-              >
-                Chat with Seller
-              </button>
+              <p className="text-xs text-gray-500 mb-4">All products sold on SastoHub are verified for quality and authenticity.</p>
             </div>
           </div>
         </div>

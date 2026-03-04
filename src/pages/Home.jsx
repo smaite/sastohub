@@ -83,6 +83,7 @@ export default function Home() {
         .from('products')
         .select('*, vendors(business_name)')
         .eq('is_published', true)
+        .eq('approval_status', 'approved')
         .order('created_at', { ascending: false });
 
       if (!error) setProducts(data || []);
@@ -108,18 +109,17 @@ export default function Home() {
         {slides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 flex items-center ${
-              index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
-            }`}
+            className={`absolute inset-0 transition-opacity duration-1000 flex items-center ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+              }`}
           >
             <div className="absolute inset-0 bg-black/20 z-10" />
             <img src={slide.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
             <div className="relative z-20 max-w-7xl mx-auto px-4 md:px-12 w-full">
-              <div className={`inline-block px-4 py-8 md:px-12 md:py-16 rounded-3xl bg-gradient-to-br ${slide.color} text-white shadow-2xl backdrop-blur-sm bg-opacity-90`}>
-                <h1 className="text-3xl md:text-6xl font-black mb-2 tracking-tighter uppercase italic leading-none">{slide.title}</h1>
-                <p className="text-lg md:text-xl font-medium opacity-90 mb-6">{slide.subtitle}</p>
-                <button className="bg-white text-gray-900 px-8 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2 w-fit">
-                  {slide.cta} <ArrowRight className="h-5 w-5" />
+              <div className={`inline-block px-6 py-8 md:px-12 md:py-16 rounded-3xl bg-gradient-to-br ${slide.color} text-white shadow-2xl backdrop-blur-sm bg-opacity-90 max-w-[95%] md:max-w-2xl`}>
+                <h1 className="text-2xl md:text-6xl font-black mb-2 tracking-tighter uppercase italic leading-none">{slide.title}</h1>
+                <p className="text-xs md:text-xl font-medium opacity-90 mb-4 md:mb-6">{slide.subtitle}</p>
+                <button className="bg-white text-gray-900 px-6 py-2 md:px-8 md:py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2 w-fit text-xs md:text-base">
+                  {slide.cta} <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
                 </button>
               </div>
             </div>
@@ -154,17 +154,17 @@ export default function Home() {
 
       <div className="max-w-7xl mx-auto px-4 py-10 space-y-12">
         {/* Category Strip */}
-        <div className="grid grid-cols-4 md:grid-cols-8 gap-4">
+        <div className="grid grid-cols-4 md:grid-cols-8 gap-3 md:gap-4">
           {categories.map(cat => (
             <div
               key={cat.name}
               onClick={() => handleCategoryClick(cat.name)}
-              className="flex flex-col items-center gap-2 group cursor-pointer"
+              className="flex flex-col items-center gap-1.5 group cursor-pointer"
             >
-              <div className={`w-14 h-14 md:w-16 md:h-16 ${cat.color} rounded-2xl flex items-center justify-center transition-transform group-hover:-translate-y-1 group-hover:shadow-md`}>
-                <cat.icon className="h-7 w-7 md:h-8 md:w-8" />
+              <div className={`w-12 h-12 md:w-16 md:h-16 ${cat.color} rounded-xl md:rounded-2xl flex items-center justify-center transition-transform group-hover:-translate-y-1 group-hover:shadow-md`}>
+                <cat.icon className="h-6 w-6 md:h-8 md:w-8" />
               </div>
-              <span className="text-xs font-bold text-gray-700 text-center">{cat.name}</span>
+              <span className="text-[10px] md:text-xs font-bold text-gray-700 text-center line-clamp-1">{cat.name}</span>
             </div>
           ))}
         </div>
