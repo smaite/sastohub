@@ -57,8 +57,12 @@ export default function Wishlist() {
   }
 
   const handleMoveToCart = (product) => {
-    addItem(product);
-    removeFromWishlist(product.wishlist_id);
+    const added = addItem(product);
+    if (added > 0) {
+      removeFromWishlist(product.wishlist_id);
+      return;
+    }
+    window.alert('Cannot add more. Stock limit reached.');
   };
 
   if (loading || authLoading) return (
@@ -71,11 +75,11 @@ export default function Wishlist() {
   if (wishlistItems.length === 0) return (
     <div className="max-w-3xl mx-auto px-4 py-20 text-center">
       <div className="w-20 h-20 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-6">
-        <Heart className="h-10 w-10 text-primary opacity-30" />
+        <Heart className="h-10 w-10 text-primary-600 opacity-30" />
       </div>
-      <h2 className="text-2xl font-black text-secondary mb-2">Your wishlist is empty</h2>
+      <h2 className="text-2xl font-black text-surface-900 mb-2">Your wishlist is empty</h2>
       <p className="text-gray-500 mb-8">Save items you like to keep track of them and buy them later.</p>
-      <Link to="/products" className="bg-primary text-white px-8 py-3 rounded-xl font-bold hover:bg-orange-600 transition-colors inline-flex items-center gap-2">
+      <Link to="/products" className="bg-primary-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-primary-700 transition-colors inline-flex items-center gap-2">
         Start Exploring <ArrowRight className="h-4 w-4" />
       </Link>
     </div>
@@ -85,11 +89,11 @@ export default function Wishlist() {
     <div className="bg-gray-50 min-h-screen pb-20">
       <div className="max-w-7xl mx-auto px-4 py-10">
         <div className="flex items-center gap-4 mb-8">
-          <div className="w-12 h-12 bg-white rounded-2xl border shadow-sm flex items-center justify-center text-primary">
+          <div className="w-12 h-12 bg-white rounded-2xl border shadow-sm flex items-center justify-center text-primary-600">
             <Heart className="h-6 w-6 fill-current" />
           </div>
           <div>
-            <h1 className="text-3xl font-black text-secondary">My Wishlist</h1>
+            <h1 className="text-3xl font-black text-surface-900">My Wishlist</h1>
             <p className="text-gray-500 text-sm">{wishlistItems.length} items saved</p>
           </div>
         </div>
@@ -115,7 +119,7 @@ export default function Wishlist() {
               <div className="mt-2">
                 <button
                   onClick={() => handleMoveToCart(item)}
-                  className="w-full py-2 bg-secondary text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-gray-800 transition-all flex items-center justify-center gap-2"
+                  className="w-full py-2 bg-surface-900 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-gray-800 transition-all flex items-center justify-center gap-2"
                 >
                   <ShoppingCart className="h-3.5 w-3.5" /> Move to Cart
                 </button>

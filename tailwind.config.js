@@ -6,12 +6,40 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'Avenir', 'Helvetica', 'Arial', 'sans-serif'],
+      },
       colors: {
         primary: {
-          DEFAULT: '#ff4d4d',
-          dark: '#e60000',
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb', // Default Primary
+          700: '#1d4ed8', // Dark Primary
+          800: '#1e40af',
+          900: '#1e3a8a',
+          950: '#172554',
         },
-        secondary: '#2d3436',
+        surface: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          950: '#020617', // Dark Surface (Secondary)
+        },
+        accent: {
+          DEFAULT: '#10b981', // Emerald
+          hover: '#059669',
+        }
       }
     },
   },

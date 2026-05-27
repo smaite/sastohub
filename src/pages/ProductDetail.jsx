@@ -14,7 +14,7 @@ export default function ProductDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const { addItem } = useCartStore();
+  const { addItem, getQuantity } = useCartStore();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
@@ -109,13 +109,19 @@ export default function ProductDetail() {
   }
 
   const handleAddToCart = () => {
-    for (let i = 0; i < quantity; i++) {
-      addItem(product);
+    const added = addItem(product, quantity);
+    if (added === 0) {
+      window.alert('Cannot add more. Stock limit reached.');
+    } else if (added < quantity) {
+      window.alert(`Only ${added} item(s) were added due to stock limit.`);
     }
+    return added;
   };
 
   const handleBuyNow = () => {
-    handleAddToCart();
+    const beforeQty = getQuantity(product.id);
+    const added = handleAddToCart();
+    if (added === 0 && beforeQty === 0) return;
     navigate('/checkout');
   };
 
@@ -152,13 +158,18 @@ export default function ProductDetail() {
     </div>
   );
 
+  const inCartQty = getQuantity(product.id);
+  const stockQuantity = Number.parseInt(product.stock_quantity, 10) || 0;
+  const maxAddable = Math.max(0, stockQuantity - inCartQty);
+  const maxSelectableQty = Math.max(1, maxAddable);
+
   return (
-    <div className="bg-gray-50 min-h-screen pb-20 text-secondary">
+    <div className="bg-gray-50 min-h-screen pb-20 text-surface-900">
       {/* Breadcrumbs */}
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-2 text-sm text-gray-500 font-medium">
-        <span className="hover:text-primary cursor-pointer" onClick={() => navigate('/')}>Home</span>
+        <span className="hover:text-primary-600 cursor-pointer" onClick={() => navigate('/')}>Home</span>
         <ChevronRight className="h-4 w-4" />
-        <span className="hover:text-primary cursor-pointer" onClick={() => navigate('/products')}>Products</span>
+        <span className="hover:text-primary-600 cursor-pointer" onClick={() => navigate('/products')}>Products</span>
         <ChevronRight className="h-4 w-4" />
         <span className="truncate opacity-60">{product.name}</span>
       </div>
@@ -180,7 +191,7 @@ export default function ProductDetail() {
               )}
               <button
                 onClick={toggleWishlist}
-                className={`absolute top-4 right-4 p-3 rounded-full shadow-lg transition-all ${isWished ? 'bg-primary text-white scale-110' : 'bg-white/80 backdrop-blur-sm hover:bg-primary hover:text-white'
+                className={`absolute top-4 right-4 p-3 rounded-full shadow-lg transition-all ${isWished ? 'bg-primary-600 text-white scale-110' : 'bg-white/80 backdrop-blur-sm hover:bg-primary-600 hover:text-white'
                   }`}
               >
                 <Heart className={`h-6 w-6 ${isWished ? 'fill-current' : ''}`} />
@@ -208,7 +219,7 @@ export default function ProductDetail() {
           <div className="lg:col-span-4 space-y-6">
             <div className="bg-white rounded-3xl border p-4 md:p-8 shadow-sm">
               <div className="space-y-4">
-                <p className="text-primary font-black text-[10px] md:text-xs uppercase tracking-[0.2em]">
+                <p className="text-primary-600 font-black text-[10px] md:text-xs uppercase tracking-[0.2em]">
                   {product.categories?.name || 'New Arrival'}
                 </p>
                 <h1 className="text-xl md:text-3xl font-black leading-tight">
@@ -228,13 +239,14 @@ export default function ProductDetail() {
 
                 <div className="space-y-1">
                   <div className="flex flex-wrap items-center gap-3">
-                    <span className="text-3xl md:text-4xl font-black text-primary italic leading-none">Rs. {product.price}</span>
+                    <span className="text-3xl md:text-4xl font-black text-primary-600 italic leading-none">Rs. {product.price}</span>
                     {product.compare_at_price && (
                       <span className="text-gray-400 line-through text-base md:text-lg italic">Rs. {product.compare_at_price}</span>
                     )}
                   </div>
-                  <p className="text-[9px] md:text-[10px] text-green-600 font-black uppercase tracking-widest flex items-center gap-1">
-                    <CheckCircle className="h-3 w-3" /> In Stock: {product.stock_quantity} units
+                  <p className={`text-[9px] md:text-[10px] font-black uppercase tracking-widest flex items-center gap-1 ${stockQuantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    <CheckCircle className="h-3 w-3" />
+                    {stockQuantity > 0 ? `In Stock: ${stockQuantity} units` : 'Out of stock'}
                   </p>
                 </div>
 
@@ -244,14 +256,15 @@ export default function ProductDetail() {
                     <div className="flex items-center border-2 border-gray-100 rounded-xl overflow-hidden bg-gray-50">
                       <button
                         onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                        className="p-1.5 md:p-2 hover:bg-white transition-colors text-gray-400 hover:text-primary"
+                        className="p-1.5 md:p-2 hover:bg-white transition-colors text-gray-400 hover:text-primary-600"
                       >
                         <Minus className="h-3.5 w-3.5 md:h-4 md:w-4" />
                       </button>
                       <span className="w-8 md:w-10 text-center font-black text-xs md:text-sm">{quantity}</span>
                       <button
-                        onClick={() => setQuantity(q => q + 1)}
-                        className="p-1.5 md:p-2 hover:bg-white transition-colors text-gray-400 hover:text-primary"
+                        onClick={() => setQuantity(q => Math.min(maxSelectableQty, q + 1))}
+                        disabled={maxAddable === 0 || quantity >= maxSelectableQty}
+                        className={`p-1.5 md:p-2 transition-colors ${maxAddable === 0 || quantity >= maxSelectableQty ? 'text-gray-300 cursor-not-allowed' : 'text-gray-400 hover:bg-white hover:text-primary-600'}`}
                       >
                         <Plus className="h-3.5 w-3.5 md:h-4 md:w-4" />
                       </button>
@@ -261,13 +274,15 @@ export default function ProductDetail() {
                   <div className="flex flex-col gap-3 pt-2">
                     <button
                       onClick={handleAddToCart}
-                      className="w-full bg-primary text-white py-3.5 md:py-4 rounded-2xl font-black text-sm md:text-base shadow-xl shadow-primary/30 hover:bg-orange-600 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-3"
+                      disabled={maxAddable === 0}
+                      className={`w-full py-3.5 md:py-4 rounded-2xl font-black text-sm md:text-base shadow-xl transition-all flex items-center justify-center gap-3 ${maxAddable === 0 ? 'bg-gray-300 text-white cursor-not-allowed shadow-none' : 'bg-primary-600 text-white shadow-primary-600/30 hover:bg-primary-700 hover:-translate-y-0.5 active:translate-y-0'}`}
                     >
                       <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" /> ADD TO CART
                     </button>
                     <button
                       onClick={handleBuyNow}
-                      className="w-full bg-secondary text-white py-3.5 md:py-4 rounded-2xl font-black text-sm md:text-base shadow-xl shadow-secondary/20 hover:bg-black hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-3"
+                      disabled={maxAddable === 0}
+                      className={`w-full py-3.5 md:py-4 rounded-2xl font-black text-sm md:text-base transition-all flex items-center justify-center gap-3 ${maxAddable === 0 ? 'bg-gray-300 text-white cursor-not-allowed shadow-none' : 'bg-surface-900 text-white shadow-xl shadow-secondary/20 hover:bg-black hover:-translate-y-0.5 active:translate-y-0'}`}
                     >
                       BUY IT NOW
                     </button>
@@ -351,21 +366,21 @@ export default function ProductDetail() {
                     value={newReview.comment}
                     onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
                     placeholder="Share your experience with this product..."
-                    className="w-full p-4 bg-white border border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all h-32 text-sm font-medium resize-none mb-4"
+                    className="w-full p-4 bg-white border border-gray-200 rounded-xl focus:ring-4 focus:ring-primary-600/5 focus:border-primary-600 outline-none transition-all h-32 text-sm font-medium resize-none mb-4"
                     required
                   />
                   <button
                     type="submit"
                     disabled={submittingReview}
-                    className="bg-secondary text-white px-8 py-3 rounded-xl font-black text-xs uppercase tracking-[0.2em] hover:bg-black transition-all flex items-center gap-2 disabled:opacity-50"
+                    className="bg-surface-900 text-white px-8 py-3 rounded-xl font-black text-xs uppercase tracking-[0.2em] hover:bg-black transition-all flex items-center gap-2 disabled:opacity-50"
                   >
                     {submittingReview ? 'Posting...' : <><Send className="h-4 w-4" /> Post Review</>}
                   </button>
                 </form>
               ) : (
                 <div className="mb-10 p-6 bg-gray-50 rounded-2xl border border-dashed text-center">
-                  <p className="text-sm font-bold text-gray-500 mb-2 text-secondary">Want to leave a review?</p>
-                  <Link to="/login" className="text-primary font-black text-xs uppercase tracking-widest hover:underline">Login to your account</Link>
+                  <p className="text-sm font-bold text-gray-500 mb-2 text-surface-900">Want to leave a review?</p>
+                  <Link to="/login" className="text-primary-600 font-black text-xs uppercase tracking-widest hover:underline">Login to your account</Link>
                 </div>
               )}
 
@@ -375,8 +390,8 @@ export default function ProductDetail() {
                   <div key={review.id} className="pb-6 border-b border-gray-100 last:border-0 last:pb-0">
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                          <User className="h-5 w-5 text-primary" />
+                        <div className="w-10 h-10 bg-primary-600/10 rounded-xl flex items-center justify-center">
+                          <User className="h-5 w-5 text-primary-600" />
                         </div>
                         <div>
                           <p className="text-sm font-black">{review.profiles?.full_name || 'Verified Buyer'}</p>

@@ -62,11 +62,11 @@ function CountdownTimer() {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="bg-primary text-white font-bold px-2 py-1 rounded text-sm">{format(timeLeft.h)}</div>
-      <span className="font-bold text-primary">:</span>
-      <div className="bg-primary text-white font-bold px-2 py-1 rounded text-sm">{format(timeLeft.m)}</div>
-      <span className="font-bold text-primary">:</span>
-      <div className="bg-primary text-white font-bold px-2 py-1 rounded text-sm">{format(timeLeft.s)}</div>
+      <div className="bg-primary-600 text-white font-bold px-2 py-1 rounded text-sm">{format(timeLeft.h)}</div>
+      <span className="font-bold text-primary-600">:</span>
+      <div className="bg-primary-600 text-white font-bold px-2 py-1 rounded text-sm">{format(timeLeft.m)}</div>
+      <span className="font-bold text-primary-600">:</span>
+      <div className="bg-primary-600 text-white font-bold px-2 py-1 rounded text-sm">{format(timeLeft.s)}</div>
     </div>
   );
 }
@@ -132,7 +132,7 @@ export default function Home() {
             <button
               key={i}
               onClick={() => setCurrentSlide(i)}
-              className={`w-3 h-3 rounded-full transition-all ${i === currentSlide ? 'bg-primary w-8' : 'bg-white/50'}`}
+              className={`w-3 h-3 rounded-full transition-all ${i === currentSlide ? 'bg-primary-600 w-8' : 'bg-white/50'}`}
             />
           ))}
         </div>
@@ -173,7 +173,7 @@ export default function Home() {
         <div className="bg-white rounded-2xl border p-6 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 text-primary text-xl md:text-2xl font-black italic uppercase tracking-tighter">
+              <div className="flex items-center gap-2 text-primary-600 text-xl md:text-2xl font-black italic uppercase tracking-tighter">
                 <Zap className="h-7 w-7 fill-current" />
                 <h2>Flash Sale</h2>
               </div>
@@ -182,7 +182,7 @@ export default function Home() {
                 <CountdownTimer />
               </div>
             </div>
-            <button className="text-primary font-black flex items-center gap-1 hover:gap-2 transition-all text-sm md:text-base">
+            <button className="text-primary-600 font-black flex items-center gap-1 hover:gap-2 transition-all text-sm md:text-base">
               SHOP ALL <ChevronRight className="h-5 w-5" />
             </button>
           </div>
@@ -237,8 +237,8 @@ export default function Home() {
         {/* Recommendations */}
         <div>
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-black text-secondary tracking-tight">Just For You</h2>
-            <button className="text-gray-400 font-bold hover:text-primary transition-colors">View More</button>
+            <h2 className="text-3xl font-black text-surface-900 tracking-tight">Just For You</h2>
+            <button className="text-gray-400 font-bold hover:text-primary-600 transition-colors">View More</button>
           </div>
 
           {loading ? (

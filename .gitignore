@@ -4,4 +4,11 @@ dist
 dist/assets/
 .vscode
 node_modules
+dist/
 sasto_hub
+*.sql
+.claude-flow/
+skills-lock.json
+supabase_admin_policies.sql
+ruvector.db
+CLAUDE.md

@@ -150,10 +150,10 @@ export default function EditProduct() {
           onClick={() => navigate('/vendor/dashboard')}
           className="p-2 hover:bg-gray-100 rounded-full transition-colors"
         >
-          <ArrowLeft className="h-6 w-6 text-secondary" />
+          <ArrowLeft className="h-6 w-6 text-surface-900" />
         </button>
         <div>
-          <h1 className="text-3xl font-black text-secondary tracking-tight">Edit Product</h1>
+          <h1 className="text-3xl font-black text-surface-900 tracking-tight">Edit Product</h1>
           <p className="text-gray-500 text-sm">Update your listing details for "{formData.name}"</p>
         </div>
       </div>
@@ -163,55 +163,55 @@ export default function EditProduct() {
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
             <div>
-              <label className="block text-sm font-black text-secondary uppercase tracking-widest mb-2">Product Name</label>
+              <label className="block text-sm font-black text-surface-900 uppercase tracking-widest mb-2">Product Name</label>
               <input
                 type="text"
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({...formData, name: e.target.value})}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-medium"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary-600/20 focus:border-primary-600 outline-none transition-all font-medium"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-black text-secondary uppercase tracking-widest mb-2">Description</label>
+              <label className="block text-sm font-black text-surface-900 uppercase tracking-widest mb-2">Description</label>
               <textarea
                 required
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all h-40 resize-none font-medium text-sm leading-relaxed"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary-600/20 focus:border-primary-600 outline-none transition-all h-40 resize-none font-medium text-sm leading-relaxed"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-black text-secondary uppercase tracking-widest mb-2">Price (Rs.)</label>
+                <label className="block text-sm font-black text-surface-900 uppercase tracking-widest mb-2">Price (Rs.)</label>
                 <input
                   type="number"
                   required
                   value={formData.price}
                   onChange={(e) => setFormData({...formData, price: e.target.value})}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-black text-lg italic text-primary"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary-600/20 focus:border-primary-600 outline-none transition-all font-black text-lg italic text-primary-600"
                 />
               </div>
               <div>
-                <label className="block text-sm font-black text-secondary uppercase tracking-widest mb-2">Stock Quantity</label>
+                <label className="block text-sm font-black text-surface-900 uppercase tracking-widest mb-2">Stock Quantity</label>
                 <input
                   type="number"
                   required
                   value={formData.stock_quantity}
                   onChange={(e) => setFormData({...formData, stock_quantity: e.target.value})}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-bold"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary-600/20 focus:border-primary-600 outline-none transition-all font-bold"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-black text-secondary uppercase tracking-widest mb-2">Category</label>
+              <label className="block text-sm font-black text-surface-900 uppercase tracking-widest mb-2">Category</label>
               <select
                 value={formData.category_id}
                 onChange={(e) => setFormData({...formData, category_id: e.target.value})}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-bold text-sm cursor-pointer"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary-600/20 focus:border-primary-600 outline-none transition-all font-bold text-sm cursor-pointer"
               >
                 <option value="">Select Category</option>
                 {categories.map(cat => (
@@ -226,9 +226,9 @@ export default function EditProduct() {
                 id="published"
                 checked={formData.is_published}
                 onChange={(e) => setFormData({...formData, is_published: e.target.checked})}
-                className="w-5 h-5 text-primary focus:ring-primary border-gray-300 rounded cursor-pointer accent-primary"
+                className="w-5 h-5 text-primary-600 focus:ring-primary-600 border-gray-300 rounded cursor-pointer accent-primary-600"
               />
-              <label htmlFor="published" className="text-sm font-bold text-secondary cursor-pointer select-none">
+              <label htmlFor="published" className="text-sm font-bold text-surface-900 cursor-pointer select-none">
                 Make this product visible to customers
               </label>
             </div>
@@ -238,7 +238,7 @@ export default function EditProduct() {
         {/* Right Column: Media */}
         <div className="space-y-6">
           <div className="bg-white p-6 rounded-3xl border shadow-sm">
-            <label className="block text-sm font-black text-secondary uppercase tracking-widest mb-4">Product Image</label>
+            <label className="block text-sm font-black text-surface-900 uppercase tracking-widest mb-4">Product Image</label>
 
             {/* Current Image */}
             {!newPreview && existingImages[0] && (
@@ -266,8 +266,8 @@ export default function EditProduct() {
 
             <label className="cursor-pointer group">
               <div className="border-2 border-dashed border-gray-200 group-hover:border-primary group-hover:bg-red-50 transition-all rounded-2xl p-6 text-center">
-                <Upload className="h-8 w-8 mx-auto text-gray-400 group-hover:text-primary mb-2 transition-colors" />
-                <p className="text-xs font-bold text-gray-500 group-hover:text-primary transition-colors">UPLOAD NEW IMAGE</p>
+                <Upload className="h-8 w-8 mx-auto text-gray-400 group-hover:text-primary-600 mb-2 transition-colors" />
+                <p className="text-xs font-bold text-gray-500 group-hover:text-primary-600 transition-colors">UPLOAD NEW IMAGE</p>
                 <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
               </div>
             </label>
@@ -278,7 +278,7 @@ export default function EditProduct() {
             type="submit"
             disabled={saving}
             onClick={handleSubmit}
-            className="w-full bg-primary text-white py-5 rounded-3xl font-black text-lg shadow-xl shadow-primary/30 hover:bg-orange-600 hover:-translate-y-1 transition-all disabled:opacity-50 disabled:translate-y-0 flex items-center justify-center gap-3"
+            className="w-full bg-primary-600 text-white py-5 rounded-3xl font-black text-lg shadow-xl shadow-primary-600/30 hover:bg-primary-700 hover:-translate-y-1 transition-all disabled:opacity-50 disabled:translate-y-0 flex items-center justify-center gap-3"
           >
             {saving ? (
                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>

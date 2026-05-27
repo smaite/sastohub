@@ -51,7 +51,11 @@ export default function VendorDashboard() {
             shipping_address,
             payment_method,
             payment_status,
-            profiles (full_name)
+            status,
+            cancel_request_reason,
+            cancel_requested_at,
+            return_request_reason,
+            return_requested_at
           )
         `).eq('vendor_id', v.id).order('created_at', { ascending: false })
       ]);
@@ -102,7 +106,7 @@ export default function VendorDashboard() {
     <div className='max-w-md mx-auto mt-20 p-8 bg-white rounded-xl shadow-sm border text-center'>
       <h2 className='text-2xl font-bold mb-4'>Become a Seller</h2>
       <p className='text-gray-600 mb-8'>You have not applied to sell on SastoHub yet.</p>
-      <Link to='/vendor/onboarding' className='bg-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-orange-600'>Apply Now</Link>
+      <Link to='/vendor/onboarding' className='bg-primary-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-primary-700'>Apply Now</Link>
     </div>
   );
 
@@ -112,7 +116,7 @@ export default function VendorDashboard() {
         <div className='w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6'>
           <Clock className='h-10 w-10 text-yellow-500' />
         </div>
-        <h2 className='text-2xl font-black text-secondary mb-3'>Application Pending</h2>
+        <h2 className='text-2xl font-black text-surface-900 mb-3'>Application Pending</h2>
         <p className='text-gray-500 mb-2'>Your application for <strong>{vendor.business_name}</strong> is under review.</p>
         <p className='text-gray-400 text-sm'>You will be notified once approved. Usually 24-48 hours.</p>
       </div>
@@ -125,7 +129,7 @@ export default function VendorDashboard() {
         <div className='w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6'>
           <XCircle className='h-10 w-10 text-red-500' />
         </div>
-        <h2 className='text-2xl font-black text-secondary mb-3'>Account Suspended</h2>
+        <h2 className='text-2xl font-black text-surface-900 mb-3'>Account Suspended</h2>
         <p className='text-gray-500'>Your vendor account has been suspended. Please contact support.</p>
       </div>
     </div>
@@ -135,10 +139,10 @@ export default function VendorDashboard() {
     <div className='max-w-7xl mx-auto px-4 py-10'>
       <div className='flex justify-between items-center mb-8'>
         <div>
-          <h1 className='text-3xl font-black text-secondary'>{vendor.business_name}</h1>
+          <h1 className='text-3xl font-black text-surface-900'>{vendor.business_name}</h1>
           <p className='text-gray-500 text-sm mt-0.5'>Seller Control Center</p>
         </div>
-        <Link to='/vendor/add-product' className='bg-primary text-white flex items-center gap-2 px-6 py-3 rounded-xl font-bold hover:bg-orange-600 transition-all shadow-lg shadow-primary/20'>
+        <Link to='/vendor/add-product' className='bg-primary-600 text-white flex items-center gap-2 px-6 py-3 rounded-xl font-bold hover:bg-primary-700 transition-all shadow-lg shadow-primary-600/20'>
           <Plus className='h-5 w-5' /> Add Product
         </Link>
       </div>
@@ -146,12 +150,12 @@ export default function VendorDashboard() {
       {/* Stats */}
       <div className='grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-10'>
         <div className='bg-white p-4 md:p-6 rounded-2xl border shadow-sm'>
-          <div className='flex items-center gap-2 md:gap-3 text-primary mb-2 md:mb-3'><Package className='h-4 w-4 md:h-5 md:w-5' /><span className='font-bold text-gray-400 text-[10px] md:text-xs uppercase tracking-widest'>Products</span></div>
-          <p className='text-2xl md:text-3xl font-black text-secondary'>{products.length}</p>
+          <div className='flex items-center gap-2 md:gap-3 text-primary-600 mb-2 md:mb-3'><Package className='h-4 w-4 md:h-5 md:w-5' /><span className='font-bold text-gray-400 text-[10px] md:text-xs uppercase tracking-widest'>Products</span></div>
+          <p className='text-2xl md:text-3xl font-black text-surface-900'>{products.length}</p>
         </div>
         <div className='bg-white p-4 md:p-6 rounded-2xl border shadow-sm'>
           <div className='flex items-center gap-2 md:gap-3 text-green-600 mb-2 md:mb-3'><ShoppingBag className='h-4 w-4 md:h-5 md:w-5' /><span className='font-bold text-gray-400 text-[10px] md:text-xs uppercase tracking-widest'>Sales</span></div>
-          <p className='text-2xl md:text-3xl font-black text-secondary'>{orders.length}</p>
+          <p className='text-2xl md:text-3xl font-black text-surface-900'>{orders.length}</p>
         </div>
         <div className='bg-white p-4 md:p-6 rounded-2xl border shadow-sm col-span-2 md:col-span-1'>
           <div className='flex items-center gap-2 md:gap-3 text-blue-600 mb-2 md:mb-3'><Clock className='h-4 w-4 md:h-5 md:w-5' /><span className='font-bold text-gray-400 text-[10px] md:text-xs uppercase tracking-widest'>Status</span></div>
@@ -167,11 +171,11 @@ export default function VendorDashboard() {
               key={t}
               onClick={() => setActiveTab(t)}
               className={`px-8 py-5 font-black text-sm transition-all relative ${
-                activeTab === t ? 'text-primary' : 'text-gray-400 hover:text-secondary'
+                activeTab === t ? 'text-primary-600' : 'text-gray-400 hover:text-surface-900'
               }`}
             >
               {t}
-              {activeTab === t && <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-t-full" />}
+              {activeTab === t && <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary-600 rounded-t-full" />}
             </button>
           ))}
         </div>
@@ -196,9 +200,9 @@ export default function VendorDashboard() {
                       <div className='w-12 h-12 bg-gray-100 rounded-xl flex-shrink-0 overflow-hidden border'>
                         {p.images?.[0] && <img src={p.images[0]} alt='' className='w-full h-full object-cover' />}
                       </div>
-                      <span className='font-bold text-secondary text-sm'>{p.name}</span>
+                      <span className='font-bold text-surface-900 text-sm'>{p.name}</span>
                     </td>
-                    <td className='px-6 py-4 text-primary font-black text-sm italic'>Rs. {p.price}</td>
+                    <td className='px-6 py-4 text-primary-600 font-black text-sm italic'>Rs. {p.price}</td>
                     <td className='px-6 py-4 text-sm font-bold text-gray-600'>{p.stock_quantity} units</td>
                     <td className='px-6 py-4'>
                       <span className={p.is_published ? 'px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-green-100 text-green-700' : 'px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-yellow-100 text-yellow-700'}>
@@ -208,7 +212,7 @@ export default function VendorDashboard() {
                     <td className='px-6 py-4 text-right flex items-center justify-end gap-2'>
                       <button
                         onClick={() => navigate(`/vendor/edit-product/${p.id}`)}
-                        className="p-2 text-gray-400 hover:text-primary transition-colors hover:bg-gray-100 rounded-lg"
+                        className="p-2 text-gray-400 hover:text-primary-600 transition-colors hover:bg-gray-100 rounded-lg"
                         title="Edit Product"
                       >
                         <Eye className="h-4 w-4" />
@@ -229,7 +233,7 @@ export default function VendorDashboard() {
                     <td colSpan='4' className='px-6 py-20 text-center text-gray-400'>
                       <Package className="h-10 w-10 mx-auto mb-3 opacity-20" />
                       <p className="font-bold">No products yet.</p>
-                      <Link to='/vendor/add-product' className='text-primary font-black hover:underline mt-1 inline-block text-sm'>Add your first product →</Link>
+                      <Link to='/vendor/add-product' className='text-primary-600 font-black hover:underline mt-1 inline-block text-sm'>Add your first product →</Link>
                     </td>
                   </tr>
                 )}
@@ -245,7 +249,6 @@ export default function VendorDashboard() {
               <thead className='bg-gray-50 border-b'>
                 <tr>
                   <th className='px-6 py-4 font-bold text-gray-500 text-xs uppercase tracking-wider'>Order / Item</th>
-                  <th className='px-6 py-4 font-bold text-gray-500 text-xs uppercase tracking-wider'>Buyer</th>
                   <th className='px-6 py-4 font-bold text-gray-500 text-xs uppercase tracking-wider'>Total</th>
                   <th className='px-6 py-4 font-bold text-gray-500 text-xs uppercase tracking-wider'>Status</th>
                   <th className='px-6 py-4 font-bold text-gray-500 text-xs uppercase tracking-wider text-right'>Action</th>
@@ -261,17 +264,22 @@ export default function VendorDashboard() {
                         </div>
                         <div>
                           <p className="text-xs font-bold text-gray-400 font-mono mb-0.5">#{item.orders?.id.slice(0,8)}</p>
-                          <p className="text-sm font-bold text-secondary truncate max-w-[150px]">{item.products?.name}</p>
+                          <p className="text-sm font-bold text-surface-900 truncate max-w-[150px]">{item.products?.name}</p>
                         </div>
                       </div>
                     </td>
-                    <td className='px-6 py-4'>
-                      <p className="text-sm font-bold text-secondary">{item.orders?.profiles?.full_name}</p>
-                      <p className="text-[10px] text-gray-400 uppercase font-bold">{item.orders?.payment_method}</p>
-                    </td>
-                    <td className='px-6 py-4 text-sm font-black text-secondary italic'>
+                    <td className='px-6 py-4 text-sm font-black text-surface-900 italic'>
                       Rs. {item.unit_price * item.quantity}
-                      <p className="text-[10px] text-gray-400 not-italic font-medium">Qty: {item.quantity}</p>
+                      <p className="text-[10px] text-gray-400 not-italic font-medium">
+                        Qty: {item.quantity} • {item.orders?.payment_method}
+                      </p>
+                      {(item.orders?.cancel_request_reason || item.orders?.return_request_reason) && (
+                        <p className="mt-1 text-[10px] text-orange-600 not-italic font-bold">
+                          {item.orders?.cancel_request_reason
+                            ? `Cancel req: ${item.orders.cancel_request_reason}`
+                            : `Return req: ${item.orders.return_request_reason}`}
+                        </p>
+                      )}
                     </td>
                     <td className='px-6 py-4'>
                       <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
@@ -288,7 +296,7 @@ export default function VendorDashboard() {
                         value={item.status}
                         disabled={actionLoading === item.id}
                         onChange={(e) => updateItemStatus(item.id, e.target.value)}
-                        className="text-xs font-bold border rounded-lg px-2 py-1.5 outline-none focus:ring-1 focus:ring-primary cursor-pointer disabled:opacity-50"
+                        className="text-xs font-bold border rounded-lg px-2 py-1.5 outline-none focus:ring-1 focus:ring-primary-600 cursor-pointer disabled:opacity-50"
                       >
                         <option value="pending">Pending</option>
                         <option value="processing">Processing</option>
@@ -301,7 +309,7 @@ export default function VendorDashboard() {
                 ))}
                 {orders.length === 0 && (
                   <tr>
-                    <td colSpan='5' className='px-6 py-20 text-center text-gray-400'>
+                    <td colSpan='4' className='px-6 py-20 text-center text-gray-400'>
                       <ShoppingBag className="h-10 w-10 mx-auto mb-3 opacity-20" />
                       <p className="font-bold">No orders yet.</p>
                       <p className="text-sm">When customers buy your products, they will appear here.</p>

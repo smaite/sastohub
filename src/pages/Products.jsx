@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import ProductCard from '../components/ProductCard';
-import { Filter, SlidersHorizontal, ChevronDown, LayoutGrid, List } from 'lucide-react';
+import { Filter, SlidersHorizontal, ChevronDown, LayoutGrid, List, SearchX } from 'lucide-react';
 
 export default function Products() {
   const [searchParams] = useSearchParams();
@@ -53,7 +53,7 @@ export default function Products() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Breadcrumbs / Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-black text-secondary">
+          <h1 className="text-2xl font-black text-surface-900">
             {searchQuery ? `Search results for "${searchQuery}"` : categoryQuery ? categoryQuery : 'All Products'}
             <span className="ml-2 text-sm font-medium text-gray-400">({products.length} items)</span>
           </h1>
@@ -64,10 +64,10 @@ export default function Products() {
           <aside className="w-full lg:w-64 flex-shrink-0 space-y-6">
             <div className="bg-white rounded-2xl border p-6 shadow-sm">
               <div className="flex items-center justify-between mb-4 pb-4 border-b">
-                <h2 className="font-bold text-secondary flex items-center gap-2">
-                  <Filter className="h-4 w-4 text-primary" /> Filters
+                <h2 className="font-bold text-surface-900 flex items-center gap-2">
+                  <Filter className="h-4 w-4 text-primary-600" /> Filters
                 </h2>
-                <button className="text-xs text-primary font-bold">Clear All</button>
+                <button className="text-xs text-primary-600 font-bold">Clear All</button>
               </div>
 
               {/* Category Filter */}
@@ -76,8 +76,8 @@ export default function Products() {
                 <div className="space-y-2">
                   {categories.map(cat => (
                     <label key={cat.id} className="flex items-center gap-2 cursor-pointer group">
-                      <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                      <span className="text-sm text-gray-600 group-hover:text-primary transition-colors">{cat.name}</span>
+                      <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-600" />
+                      <span className="text-sm text-gray-600 group-hover:text-primary-600 transition-colors">{cat.name}</span>
                     </label>
                   ))}
                 </div>
@@ -87,17 +87,17 @@ export default function Products() {
               <div className="mt-8 space-y-3">
                 <h3 className="text-sm font-bold text-gray-900">Price Range</h3>
                 <div className="grid grid-cols-2 gap-2">
-                  <input type="number" placeholder="Min" className="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:border-primary" />
-                  <input type="number" placeholder="Max" className="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:border-primary" />
+                  <input type="number" placeholder="Min" className="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:border-primary-600" />
+                  <input type="number" placeholder="Max" className="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:border-primary-600" />
                 </div>
               </div>
             </div>
 
             {/* Promo box in sidebar */}
-            <div className="bg-primary rounded-2xl p-6 text-white overflow-hidden relative">
+            <div className="bg-primary-600 rounded-2xl p-6 text-white overflow-hidden relative">
               <h3 className="text-xl font-black mb-2 relative z-10">Flash Deals</h3>
               <p className="text-sm opacity-90 mb-4 relative z-10">Up to 40% OFF</p>
-              <button className="bg-white text-primary px-4 py-2 rounded-xl text-xs font-bold relative z-10 shadow-lg">View Deals</button>
+              <button className="bg-white text-primary-600 px-4 py-2 rounded-xl text-xs font-bold relative z-10 shadow-lg">View Deals</button>
               <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-white/20 rounded-full blur-2xl"></div>
             </div>
           </aside>
@@ -113,13 +113,13 @@ export default function Products() {
                 <div className="hidden sm:flex items-center gap-1 border rounded-xl overflow-hidden p-1 bg-gray-50">
                   <button
                     onClick={() => setView('grid')}
-                    className={`p-1.5 rounded-lg ${view === 'grid' ? 'bg-white shadow-sm text-primary' : 'text-gray-400'}`}
+                    className={`p-1.5 rounded-lg ${view === 'grid' ? 'bg-white shadow-sm text-primary-600' : 'text-gray-400'}`}
                   >
                     <LayoutGrid className="h-4 w-4" />
                   </button>
                   <button
                     onClick={() => setView('list')}
-                    className={`p-1.5 rounded-lg ${view === 'list' ? 'bg-white shadow-sm text-primary' : 'text-gray-400'}`}
+                    className={`p-1.5 rounded-lg ${view === 'list' ? 'bg-white shadow-sm text-primary-600' : 'text-gray-400'}`}
                   >
                     <List className="h-4 w-4" />
                   </button>
@@ -157,14 +157,14 @@ export default function Products() {
 
                 {products.length === 0 && (
                   <div className="py-20 text-center bg-white rounded-3xl border-2 border-dashed flex flex-col items-center">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-400 text-3xl">
-                      🔍
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-400">
+                      <SearchX className="h-8 w-8" />
                     </div>
                     <p className="text-gray-500 font-bold">No products found matching your criteria.</p>
                     <p className="text-gray-400 text-sm mt-1 text-center max-w-xs">
                       Try adjusting your filters or search keywords to find what you're looking for.
                     </p>
-                    <button className="mt-6 bg-primary text-white px-6 py-2.5 rounded-full font-bold shadow-lg hover:shadow-primary/20 transition-all">
+                    <button className="mt-6 bg-primary-600 text-white px-6 py-2.5 rounded-full font-bold shadow-lg hover:bg-primary-700 transition-all">
                       Clear All Filters
                     </button>
                   </div>

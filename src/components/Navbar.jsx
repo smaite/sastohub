@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   ShoppingCart, User, Search, LogOut, LayoutDashboard,
-  ChevronDown, MapPin, Phone, Bell, Heart, Package
+  ChevronDown, MapPin, Phone, Bell, Heart, Package, Menu
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cartStore';
@@ -47,7 +47,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 shadow-md">
       {/* Top bar */}
-      <div className="bg-primary text-white text-xs py-1.5 px-4">
+      <div className="bg-primary-600 text-white text-xs py-1.5 px-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1"><Phone className="h-3 w-3" /> 01-XXXXXXX</span>
@@ -72,7 +72,7 @@ export default function Navbar() {
             {/* Logo */}
             <Link to="/" className="flex-shrink-0">
               <div className="flex flex-col leading-none">
-                <span className="text-xl md:text-2xl font-black text-primary tracking-tight">SastoHub</span>
+                <span className="text-xl md:text-2xl font-black text-primary-600 tracking-tight">SastoHub</span>
                 <span className="text-[8px] md:text-[10px] text-gray-400 tracking-widest uppercase ml-0.5">Nepal's Marketplace</span>
               </div>
             </Link>
@@ -85,7 +85,7 @@ export default function Navbar() {
               <Link to="/cart" className="relative">
                 <ShoppingCart className="h-5 w-5 text-gray-600" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-primary text-white text-[8px] rounded-full h-3.5 w-3.5 flex items-center justify-center font-bold">
+                  <span className="absolute -top-1.5 -right-1.5 bg-primary-600 text-white text-[8px] rounded-full h-3.5 w-3.5 flex items-center justify-center font-bold">
                     {cartCount}
                   </span>
                 )}
@@ -111,9 +111,9 @@ export default function Navbar() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search SastoHub..."
-              className="flex-1 border border-gray-300 rounded-l-xl md:rounded-l-none px-4 py-2 text-sm outline-none focus:border-primary"
+              className="flex-1 border border-gray-300 rounded-l-xl md:rounded-l-none px-4 py-2 text-sm outline-none focus:border-primary-600"
             />
-            <button type="submit" className="bg-primary text-white px-4 md:px-5 py-2 rounded-r-xl md:rounded-r-full hover:bg-orange-600 transition-colors">
+            <button type="submit" className="bg-primary-600 text-white px-4 md:px-5 py-2 rounded-r-xl md:rounded-r-full hover:bg-primary-700 transition-colors">
               <Search className="h-5 w-5" />
             </button>
           </form>
@@ -130,7 +130,7 @@ export default function Navbar() {
                 {/* Dropdown */}
                 <div className="absolute top-10 right-0 bg-white border rounded-xl shadow-xl py-2 w-48 hidden group-hover:block z-50">
                   <div className="px-4 py-2 border-b mb-1">
-                    <p className="font-bold text-sm text-secondary truncate">{profile?.full_name || user.email}</p>
+                    <p className="font-bold text-sm text-surface-900 truncate">{profile?.full_name || user.email}</p>
                     <p className="text-xs text-gray-400 capitalize">{profile?.role}</p>
                   </div>
                   <Link to="/orders" className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-50">
@@ -169,7 +169,7 @@ export default function Navbar() {
               <div className="relative">
                 <ShoppingCart className="h-6 w-6 text-gray-600" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-primary text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold">
+                  <span className="absolute -top-2 -right-2 bg-primary-600 text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold">
                     {cartCount}
                   </span>
                 )}
@@ -181,13 +181,13 @@ export default function Navbar() {
       </div>
 
       {/* Category nav bar */}
-      <div className="bg-secondary text-white text-sm">
+      <div className="bg-surface-900 text-white text-sm">
         <div className="max-w-7xl mx-auto px-4 flex items-center gap-1 overflow-x-auto scrollbar-hide">
           <button
             onClick={() => navigate('/products')}
             className="flex items-center gap-2 px-4 py-2.5 font-semibold whitespace-nowrap hover:bg-white/10 border-r border-white/10"
           >
-            ☰ All Categories
+            <Menu className="h-4 w-4" /> All Categories
           </button>
           {categories.map(cat => (
             <button

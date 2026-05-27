@@ -41,17 +41,17 @@ export default function Signup() {
   };
 
   return (
-    <div className="h-screen flex items-stretch bg-white font-sans text-secondary overflow-hidden">
+    <div className="h-screen flex items-stretch bg-white font-sans text-surface-900 overflow-hidden">
       {/* Left Side: Decorative & Info */}
       <div className="hidden lg:flex w-1/2 bg-[#0a0a0a] relative overflow-hidden flex-col justify-between p-12 xl:p-16 text-white">
         <div className="absolute top-0 right-0 w-full h-full opacity-20 pointer-events-none">
-          <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] rounded-full bg-primary blur-[100px]"></div>
+          <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] rounded-full bg-primary-600 blur-[100px]"></div>
           <div className="absolute bottom-[-10%] left-[-10%] w-[300px] h-[300px] rounded-full bg-blue-600 blur-[80px] opacity-40"></div>
         </div>
 
         <div className="relative z-10">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-primary/20 text-white">
+            <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-primary-600/20 text-white">
               <ShoppingBag className="text-white h-6 w-6" />
             </div>
             <span className="text-2xl font-black text-white tracking-tighter uppercase italic">SastoHub</span>
@@ -61,7 +61,7 @@ export default function Signup() {
         <div className="relative z-10">
           <h1 className="text-5xl xl:text-6xl font-black text-white leading-[1.1] mb-6 italic uppercase tracking-tighter">
             Join the <br />
-            <span className="text-primary text-glow">Evolution</span> <br />
+            <span className="text-primary-600 text-glow">Evolution</span> <br />
             of Trade.
           </h1>
           <p className="text-gray-400 text-lg font-medium leading-relaxed mb-8 max-w-sm">
@@ -71,7 +71,7 @@ export default function Signup() {
           <div className="space-y-4">
             <div className="flex items-center gap-4 text-white/90">
               <div className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 backdrop-blur-md">
-                <Sparkles className="h-4 w-4 text-primary" />
+                <Sparkles className="h-4 w-4 text-primary-600" />
               </div>
               <span className="text-xs font-black uppercase tracking-[0.2em]">Personalized Feed</span>
             </div>
@@ -84,12 +84,12 @@ export default function Signup() {
       </div>
 
       {/* Right Side: Signup Form (Independently Scrollable) */}
-      <div className="flex-1 flex flex-col p-6 md:p-12 lg:p-16 bg-white overflow-y-auto scrollbar-hide text-secondary">
-        <div className="w-full max-w-md mx-auto my-auto py-8 text-secondary">
+      <div className="flex-1 flex flex-col p-6 md:p-12 lg:p-16 bg-white overflow-y-auto scrollbar-hide text-surface-900">
+        <div className="w-full max-w-md mx-auto my-auto py-8 text-surface-900">
           {/* Mobile Logo */}
           <div className="lg:hidden mb-12">
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center">
                 <ShoppingBag className="text-white h-6 w-6" />
               </div>
               <span className="text-2xl font-black tracking-tighter uppercase italic">SastoHub</span>
@@ -107,17 +107,17 @@ export default function Signup() {
             </div>
           )}
 
-          <form onSubmit={handleSignup} className="space-y-4 text-secondary">
+          <form onSubmit={handleSignup} className="space-y-4 text-surface-900">
             <div className="space-y-1.5">
               <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Full Name</label>
               <div className="relative group">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300 group-focus-within:text-primary transition-colors" />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300 group-focus-within:text-primary-600 transition-colors" />
                 <input
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="John Doe"
-                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-[16px] focus:bg-white focus:border-primary/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all font-bold text-sm shadow-inner text-secondary"
+                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-[16px] focus:bg-white focus:border-primary-600/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all font-bold text-sm shadow-inner text-surface-900"
                   required
                 />
               </div>
@@ -126,13 +126,13 @@ export default function Signup() {
             <div className="space-y-1.5">
               <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Email Address</label>
               <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300 group-focus-within:text-primary transition-colors" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300 group-focus-within:text-primary-600 transition-colors" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-[16px] focus:bg-white focus:border-primary/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all font-bold text-sm shadow-inner text-secondary"
+                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-[16px] focus:bg-white focus:border-primary-600/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all font-bold text-sm shadow-inner text-surface-900"
                   required
                 />
               </div>
@@ -141,13 +141,13 @@ export default function Signup() {
             <div className="space-y-1.5">
               <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Password</label>
               <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300 group-focus-within:text-primary transition-colors" />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300 group-focus-within:text-primary-600 transition-colors" />
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Min. 8 characters"
-                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-[16px] focus:bg-white focus:border-primary/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all font-bold text-sm shadow-inner text-secondary"
+                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-[16px] focus:bg-white focus:border-primary-600/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all font-bold text-sm shadow-inner text-surface-900"
                   required
                 />
               </div>
@@ -156,7 +156,7 @@ export default function Signup() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-secondary text-white py-4 rounded-[16px] font-black text-xs uppercase tracking-[0.3em] shadow-2xl shadow-secondary/30 hover:bg-black hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-50 flex items-center justify-center gap-3 group mt-2"
+              className="w-full bg-surface-900 text-white py-4 rounded-[16px] font-black text-xs uppercase tracking-[0.3em] shadow-2xl shadow-surface-900/30 hover:bg-black hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-50 flex items-center justify-center gap-3 group mt-2"
             >
               {loading ? (
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -179,18 +179,18 @@ export default function Signup() {
             <button
               type="button"
               onClick={handleGoogleLogin}
-              className="flex items-center justify-center gap-3 py-3 border-2 border-gray-50 rounded-2xl hover:bg-gray-50 hover:border-gray-100 transition-all font-black text-[10px] uppercase tracking-widest text-secondary"
+              className="flex items-center justify-center gap-3 py-3 border-2 border-gray-50 rounded-2xl hover:bg-gray-50 hover:border-gray-100 transition-all font-black text-[10px] uppercase tracking-widest text-surface-900"
             >
               <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="h-4 w-4" alt="G" /> Google
             </button>
-            <button className="flex items-center justify-center gap-3 py-3 border-2 border-gray-50 rounded-2xl hover:bg-gray-50 hover:border-gray-100 transition-all font-black text-[10px] uppercase tracking-widest text-secondary">
+            <button className="flex items-center justify-center gap-3 py-3 border-2 border-gray-50 rounded-2xl hover:bg-gray-50 hover:border-gray-100 transition-all font-black text-[10px] uppercase tracking-widest text-surface-900">
               <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" className="h-4 w-4" alt="F" /> Facebook
             </button>
           </div>
 
-          <p className="text-center text-[10px] font-black text-gray-400 uppercase tracking-widest mt-8 text-secondary">
+          <p className="text-center text-[10px] font-black text-gray-400 uppercase tracking-widest mt-8 text-surface-900">
             Already registered?{' '}
-            <Link to="/login" className="text-primary hover:underline italic">Sign in here</Link>
+            <Link to="/login" className="text-primary-600 hover:underline italic">Sign in here</Link>
           </p>
         </div>
       </div>

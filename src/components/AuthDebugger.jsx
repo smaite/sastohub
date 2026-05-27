@@ -39,7 +39,7 @@ export default function AuthDebugger() {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 z-[9999] bg-secondary text-white p-3 rounded-full shadow-2xl hover:bg-primary transition-all flex items-center gap-2 font-bold text-xs border-2 border-white"
+        className="fixed bottom-4 right-4 z-[9999] bg-surface-900 text-white p-3 rounded-full shadow-2xl hover:bg-primary-600 transition-all flex items-center gap-2 font-bold text-xs border-2 border-white"
       >
         <Shield className="h-4 w-4" /> AUTH DEBUG
       </button>
@@ -48,7 +48,7 @@ export default function AuthDebugger() {
 
   return (
     <div className="fixed bottom-4 right-4 z-[9999] w-80 bg-white rounded-2xl shadow-2xl border-2 border-secondary overflow-hidden flex flex-col animate-slide-up">
-      <div className="bg-secondary p-3 flex items-center justify-between text-white">
+      <div className="bg-surface-900 p-3 flex items-center justify-between text-white">
         <div className="flex items-center gap-2">
           <Shield className="h-4 w-4" />
           <span className="font-black text-xs uppercase tracking-widest">Auth Debugger</span>
@@ -67,7 +67,7 @@ export default function AuthDebugger() {
           <div className="bg-gray-50 p-2 rounded-lg border text-[11px] font-mono break-all">
             {user ? (
               <>
-                <p className="text-secondary font-bold">{user.email}</p>
+                <p className="text-surface-900 font-bold">{user.email}</p>
                 <p className="text-gray-400 mt-1">ID: {user.id}</p>
               </>
             ) : (
@@ -101,7 +101,7 @@ export default function AuthDebugger() {
                 </p>
                 <p className="flex justify-between items-center pt-1 border-t border-gray-200">
                   <span className="text-gray-400 uppercase text-[9px]">Name:</span>
-                  <span className="font-bold text-secondary truncate ml-2">{profile.full_name || 'NULL'}</span>
+                  <span className="font-bold text-surface-900 truncate ml-2">{profile.full_name || 'NULL'}</span>
                 </p>
               </div>
             ) : (
@@ -115,7 +115,7 @@ export default function AuthDebugger() {
           <button
             onClick={forceRefresh}
             disabled={!user || isRefreshing}
-            className="w-full bg-secondary text-white py-2 rounded-xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-gray-800 disabled:opacity-50 transition-all"
+            className="w-full bg-surface-900 text-white py-2 rounded-xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-gray-800 disabled:opacity-50 transition-all"
           >
             <RefreshCcw className={`h-3 w-3 ${isRefreshing ? 'animate-spin' : ''}`} />
             {isRefreshing ? 'REFRESHING...' : 'FORCE REFRESH PROFILE'}

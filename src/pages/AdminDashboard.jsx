@@ -11,6 +11,10 @@ function StatusBadge({ status }) {
     pending: 'bg-yellow-100 text-yellow-700',
     active: 'bg-green-100 text-green-700',
     suspended: 'bg-red-100 text-red-700',
+    processing: 'bg-blue-100 text-blue-700',
+    shipped: 'bg-purple-100 text-purple-700',
+    delivered: 'bg-green-100 text-green-700',
+    cancelled: 'bg-red-100 text-red-700',
   };
   return <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${map[status] || 'bg-gray-100 text-gray-600'}`}>{status}</span>;
 }
@@ -49,12 +53,12 @@ function CategoryManager({ categories, onRefresh }) {
           placeholder="New Category Name"
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
-          className="flex-1 px-4 py-2 border rounded-xl outline-none focus:ring-1 focus:ring-primary text-sm font-medium"
+          className="flex-1 px-4 py-2 border rounded-xl outline-none focus:ring-1 focus:ring-primary-600 text-sm font-medium"
           required
         />
         <button
           disabled={loading}
-          className="px-6 py-2 bg-primary text-white rounded-xl font-bold hover:bg-orange-600 disabled:opacity-50 transition-all text-xs uppercase tracking-widest"
+          className="px-6 py-2 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 disabled:opacity-50 transition-all text-xs uppercase tracking-widest"
         >
           {loading ? 'Adding...' : 'Add Category'}
         </button>
@@ -64,7 +68,7 @@ function CategoryManager({ categories, onRefresh }) {
         {categories.map(cat => (
           <div key={cat.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100 group transition-all hover:bg-white hover:shadow-sm">
             <div>
-              <p className="font-bold text-secondary text-sm">{cat.name}</p>
+              <p className="font-bold text-surface-900 text-sm">{cat.name}</p>
               <p className="text-[10px] text-gray-400 font-mono uppercase tracking-widest mt-0.5">{cat.slug}</p>
             </div>
             <button
@@ -89,22 +93,22 @@ function ReviewModal({ vendor, onClose, onAction, actionLoading }) {
   if (!vendor) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md text-secondary">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md text-surface-900">
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col border border-white/20">
         <div className="px-8 py-6 border-b flex items-center justify-between bg-gray-50/50">
           <div>
-            <h2 className="text-2xl font-black text-secondary uppercase italic tracking-tighter">{vendor.business_name}</h2>
+            <h2 className="text-2xl font-black text-surface-900 uppercase italic tracking-tighter">{vendor.business_name}</h2>
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-0.5">Registration Review</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-gray-200 rounded-full transition-colors text-secondary">
+          <button onClick={onClose} className="p-2 hover:bg-gray-200 rounded-full transition-colors text-surface-900">
             <X className="h-6 w-6" />
           </button>
         </div>
 
-        <div className="p-8 overflow-y-auto space-y-10 text-secondary font-sans">
+        <div className="p-8 overflow-y-auto space-y-10 text-surface-900 font-sans">
           <div>
             <h3 className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-6">
-              <Store className="h-4 w-4 text-primary" /> 1. Shop Profile
+              <Store className="h-4 w-4 text-primary-600" /> 1. Shop Profile
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
@@ -114,7 +118,7 @@ function ReviewModal({ vendor, onClose, onAction, actionLoading }) {
               <div>
                 <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">Business Website</p>
                 {vendor.website ? (
-                  <a href={vendor.website} target="_blank" rel="noreferrer" className="text-primary font-bold hover:underline flex items-center gap-1">
+                  <a href={vendor.website} target="_blank" rel="noreferrer" className="text-primary-600 font-bold hover:underline flex items-center gap-1">
                     {vendor.website} <ExternalLink className="h-3 w-3" />
                   </a>
                 ) : <p className="text-gray-400 italic text-sm">No website provided</p>}
@@ -126,18 +130,18 @@ function ReviewModal({ vendor, onClose, onAction, actionLoading }) {
             </div>
           </div>
 
-          <div className="pt-8 border-t text-secondary">
+          <div className="pt-8 border-t text-surface-900">
             <h3 className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-6">
-              <MapPin className="h-4 w-4 text-primary" /> 2. Operations & Contact
+              <MapPin className="h-4 w-4 text-primary-600" /> 2. Operations & Contact
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="md:col-span-2">
                 <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">Physical Address</p>
-                <p className="font-bold text-secondary">{vendor.address}</p>
+                <p className="font-bold text-surface-900">{vendor.address}</p>
               </div>
               <div>
                 <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">Business Phone</p>
-                <p className="font-black text-secondary italic text-lg">{vendor.phone}</p>
+                <p className="font-black text-surface-900 italic text-lg">{vendor.phone}</p>
               </div>
               <div>
                 <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">City</p>
@@ -154,25 +158,25 @@ function ReviewModal({ vendor, onClose, onAction, actionLoading }) {
             </div>
           </div>
 
-          <div className="pt-8 border-t text-secondary">
+          <div className="pt-8 border-t text-surface-900">
             <h3 className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-6">
-              <CreditCard className="h-4 w-4 text-primary" /> 3. Banking Credentials
+              <CreditCard className="h-4 w-4 text-primary-600" /> 3. Banking Credentials
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="bg-gray-50 p-5 rounded-2xl border border-gray-100">
                 <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">Account Holder</p>
-                <p className="font-black text-secondary uppercase italic">{vendor.account_holder}</p>
+                <p className="font-black text-surface-900 uppercase italic">{vendor.account_holder}</p>
               </div>
               <div className="bg-gray-50 p-5 rounded-2xl border border-gray-100">
                 <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">Account Number</p>
-                <p className="font-black text-secondary font-mono tracking-wider">{vendor.account_number}</p>
+                <p className="font-black text-surface-900 font-mono tracking-wider">{vendor.account_number}</p>
               </div>
             </div>
           </div>
 
-          <div className="pt-8 border-t text-secondary">
+          <div className="pt-8 border-t text-surface-900">
             <h3 className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-6">
-              <FileText className="h-4 w-4 text-primary" /> 4. Legal Documentation
+              <FileText className="h-4 w-4 text-primary-600" /> 4. Legal Documentation
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
@@ -188,8 +192,8 @@ function ReviewModal({ vendor, onClose, onAction, actionLoading }) {
                   rel="noreferrer"
                   className="p-5 border-2 border-dashed rounded-2xl hover:border-primary hover:bg-red-50/50 transition-all group text-center bg-gray-50/30"
                 >
-                  <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest group-hover:text-primary mb-3">{doc.label}</p>
-                  <div className="inline-flex items-center gap-2 text-xs font-black text-primary uppercase tracking-widest">
+                  <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest group-hover:text-primary-600 mb-3">{doc.label}</p>
+                  <div className="inline-flex items-center gap-2 text-xs font-black text-primary-600 uppercase tracking-widest">
                     OPEN FILE <ExternalLink className="h-3.5 w-3.5" />
                   </div>
                 </a>
@@ -209,7 +213,7 @@ function ReviewModal({ vendor, onClose, onAction, actionLoading }) {
           <button
             onClick={() => onAction(vendor.id, vendor.owner_id, 'active')}
             disabled={actionLoading === vendor.id}
-            className="px-8 py-3 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-orange-600 transition-all shadow-xl shadow-primary/20 disabled:opacity-50"
+            className="px-8 py-3 bg-primary-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary-700 transition-all shadow-xl shadow-primary-600/20 disabled:opacity-50"
           >
             {actionLoading === vendor.id ? 'PROCESSING...' : 'APPROVE VENDOR'}
           </button>
@@ -234,6 +238,8 @@ export default function AdminDashboard() {
   const [paymentQrUrl, setPaymentQrUrl] = useState('');
   const [qrUploading, setQrUploading] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
+  const orderStatuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
+  const paymentStatuses = ['pending', 'paid'];
 
   useEffect(() => {
     if (profile && profile.role !== 'admin') { navigate('/'); return; }
@@ -297,6 +303,32 @@ export default function AdminDashboard() {
     setActionLoading('');
   }
 
+  async function updateOrderStatus(orderId, status) {
+    setActionLoading(orderId);
+    const { error } = await supabase
+      .from('orders')
+      .update({ status })
+      .eq('id', orderId);
+    if (error) {
+      alert(error.message);
+    }
+    await fetchAll();
+    setActionLoading('');
+  }
+
+  async function updateOrderPaymentStatus(orderId, paymentStatus) {
+    setActionLoading(orderId);
+    const { error } = await supabase
+      .from('orders')
+      .update({ payment_status: paymentStatus })
+      .eq('id', orderId);
+    if (error) {
+      alert(error.message);
+    }
+    await fetchAll();
+    setActionLoading('');
+  }
+
   if (loading) return (
     <div className="min-h-[60vh] flex items-center justify-center">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -304,20 +336,20 @@ export default function AdminDashboard() {
   );
 
   return (
-    <div className='max-w-7xl mx-auto px-4 py-8 text-secondary font-sans'>
+    <div className='max-w-7xl mx-auto px-4 py-8 text-surface-900 font-sans'>
       <div className='mb-8 flex items-end justify-between'>
         <div>
           <h1 className='text-4xl font-black italic uppercase tracking-tighter leading-none'>Platform Control</h1>
           <p className='text-gray-400 font-bold text-[10px] mt-2 uppercase tracking-[0.3em]'>Super Administrator Level Access</p>
         </div>
-        <button onClick={fetchAll} className="p-2.5 bg-gray-50 border-2 border-gray-100 rounded-xl hover:bg-gray-100 transition-all text-secondary">
+        <button onClick={fetchAll} className="p-2.5 bg-gray-50 border-2 border-gray-100 rounded-xl hover:bg-gray-100 transition-all text-surface-900">
           <Clock className="h-5 w-5 text-gray-400" />
         </button>
       </div>
 
       <div className='grid grid-cols-2 md:grid-cols-4 gap-6 mb-10'>
         <div className='bg-white rounded-3xl border shadow-sm p-6 relative overflow-hidden group'>
-          <div className="absolute -right-4 -bottom-4 text-primary opacity-[0.03] transform rotate-12 group-hover:scale-110 transition-transform"><Store className="h-32 w-32" /></div>
+          <div className="absolute -right-4 -bottom-4 text-primary-600 opacity-[0.03] transform rotate-12 group-hover:scale-110 transition-transform"><Store className="h-32 w-32" /></div>
           <p className='text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2'>Vendors</p>
           <p className='text-4xl font-black italic'>{stats.vendors}</p>
         </div>
@@ -344,11 +376,11 @@ export default function AdminDashboard() {
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`px-10 py-6 font-black text-[10px] uppercase tracking-[0.2em] transition-all relative whitespace-nowrap ${tab === t ? 'text-primary' : 'text-gray-400 hover:text-secondary'
+              className={`px-10 py-6 font-black text-[10px] uppercase tracking-[0.2em] transition-all relative whitespace-nowrap ${tab === t ? 'text-primary-600' : 'text-gray-400 hover:text-surface-900'
                 }`}
             >
               {t}
-              {tab === t && <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-t-full" />}
+              {tab === t && <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary-600 rounded-t-full" />}
             </button>
           ))}
         </div>
@@ -357,7 +389,7 @@ export default function AdminDashboard() {
           <div className="overflow-x-auto">
             <table className='w-full text-left border-collapse'>
               <thead>
-                <tr className="border-b bg-gray-50/50 text-secondary">
+                <tr className="border-b bg-gray-50/50 text-surface-900">
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Business Entity</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Legal Owner</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Joined</th>
@@ -365,11 +397,11 @@ export default function AdminDashboard() {
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 text-right'>Action</th>
                 </tr>
               </thead>
-              <tbody className='divide-y text-secondary'>
+              <tbody className='divide-y text-surface-900'>
                 {vendors.map(v => (
                   <tr key={v.id} className='hover:bg-gray-50/50 transition-colors group'>
                     <td className='px-8 py-6'>
-                      <p className='font-black text-sm group-hover:text-primary transition-colors'>{v.business_name}</p>
+                      <p className='font-black text-sm group-hover:text-primary-600 transition-colors'>{v.business_name}</p>
                       <p className='text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5'>{v.city}, {v.state}</p>
                     </td>
                     <td className='px-8 py-6'>
@@ -381,7 +413,7 @@ export default function AdminDashboard() {
                     <td className='px-8 py-6 text-right flex items-center justify-end gap-3'>
                       <button
                         onClick={() => setSelectedVendor(v)}
-                        className='px-4 py-2 bg-secondary text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-black transition-all flex items-center gap-2'
+                        className='px-4 py-2 bg-surface-900 text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-black transition-all flex items-center gap-2'
                       >
                         <Eye className='h-3.5 w-3.5' /> Review
                       </button>
@@ -403,14 +435,14 @@ export default function AdminDashboard() {
           <div className="overflow-x-auto">
             <table className='w-full text-left'>
               <thead>
-                <tr className="border-b bg-gray-50/50 text-secondary">
+                <tr className="border-b bg-gray-50/50 text-surface-900">
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Identity</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Clearance</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Registration</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 text-right'>Privilege</th>
                 </tr>
               </thead>
-              <tbody className='divide-y text-secondary'>
+              <tbody className='divide-y text-surface-900'>
                 {users.map(u => (
                   <tr key={u.id} className='hover:bg-gray-50/50 transition-colors'>
                     <td className='px-8 py-6'>
@@ -424,7 +456,7 @@ export default function AdminDashboard() {
                         value={u.role || 'buyer'}
                         onChange={(e) => updateUserRole(u.id, e.target.value)}
                         disabled={actionLoading === u.id}
-                        className='text-[9px] font-black uppercase tracking-[0.2em] border-2 border-gray-100 rounded-xl px-4 py-2.5 outline-none focus:border-primary cursor-pointer disabled:opacity-50 transition-all appearance-none bg-white text-secondary'
+                        className='text-[9px] font-black uppercase tracking-[0.2em] border-2 border-gray-100 rounded-xl px-4 py-2.5 outline-none focus:border-primary-600 cursor-pointer disabled:opacity-50 transition-all appearance-none bg-white text-surface-900'
                       >
                         <option value='buyer'>Buyer</option>
                         <option value='seller'>Seller</option>
@@ -442,29 +474,62 @@ export default function AdminDashboard() {
           <div className="overflow-x-auto">
             <table className='w-full text-left'>
               <thead>
-                <tr className="border-b bg-gray-50/50 text-secondary">
+                <tr className="border-b bg-gray-50/50 text-surface-900">
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>ID</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Customer</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Valuation</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Payment</th>
+                  <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Pay Status</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Reference</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Progress</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Date</th>
+                  <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 text-right'>Action</th>
                 </tr>
               </thead>
-              <tbody className='divide-y text-secondary'>
+              <tbody className='divide-y text-surface-900'>
                 {orders.map(o => (
                   <tr key={o.id} className='hover:bg-gray-50 transition-colors'>
                     <td className='px-8 py-6 font-mono text-[10px] font-black text-gray-400'>#{o.id.slice(0, 10).toUpperCase()}</td>
                     <td className='px-8 py-6 text-sm font-black'>{o.profiles?.full_name || 'Guest'}</td>
-                    <td className='px-8 py-6 text-sm font-black text-primary italic'>Rs. {o.total_amount}</td>
+                    <td className='px-8 py-6 text-sm font-black text-primary-600 italic'>Rs. {o.total_amount}</td>
                     <td className='px-8 py-6'><span className='text-[9px] font-black uppercase tracking-widest bg-gray-100 px-2 py-1 rounded-lg text-gray-500 italic'>{o.payment_method}</span></td>
-                    <td className='px-8 py-6 text-[10px] font-mono font-bold text-gray-500'>{o.payment_reference || <span className='italic text-gray-300'>—</span>}</td>
+                    <td className='px-8 py-6'>
+                      <select
+                        value={o.payment_method === 'cod' ? 'paid' : (o.payment_status || 'pending')}
+                        onChange={(e) => updateOrderPaymentStatus(o.id, e.target.value)}
+                        disabled={actionLoading === o.id || o.payment_method === 'cod'}
+                        className='text-[9px] font-black uppercase tracking-[0.2em] border-2 border-gray-100 rounded-xl px-4 py-2.5 outline-none focus:border-primary-600 cursor-pointer disabled:opacity-50 transition-all appearance-none bg-white text-surface-900'
+                      >
+                        {paymentStatuses.map((status) => (
+                          <option key={status} value={status}>
+                            {status === 'paid' ? 'completed' : status}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td className='px-8 py-6 text-[10px] font-mono font-bold text-gray-500'>{o.payment_reference || <span className='italic text-gray-300'>-</span>}</td>
                     <td className='px-8 py-6'><StatusBadge status={o.status} /></td>
                     <td className='px-8 py-6 text-[10px] font-black text-gray-400 uppercase tracking-widest'>{new Date(o.created_at).toLocaleDateString()}</td>
+                    <td className='px-8 py-6 text-right'>
+                      {(o.cancel_request_reason || o.return_request_reason) && (
+                        <p className='mb-1 text-[10px] text-orange-600 font-bold'>
+                          {o.cancel_request_reason ? `Cancel: ${o.cancel_request_reason}` : `Return: ${o.return_request_reason}`}
+                        </p>
+                      )}
+                      <select
+                        value={o.status}
+                        onChange={(e) => updateOrderStatus(o.id, e.target.value)}
+                        disabled={actionLoading === o.id || o.status === 'cancelled'}
+                        className='text-[9px] font-black uppercase tracking-[0.2em] border-2 border-gray-100 rounded-xl px-4 py-2.5 outline-none focus:border-primary-600 cursor-pointer disabled:opacity-50 transition-all appearance-none bg-white text-surface-900'
+                      >
+                        {orderStatuses.map((status) => (
+                          <option key={status} value={status}>{status}</option>
+                        ))}
+                      </select>
+                    </td>
                   </tr>
                 ))}
-                {orders.length === 0 && <tr><td colSpan='7' className='px-8 py-20 text-center text-gray-400 text-[10px] font-black uppercase tracking-[0.3em] opacity-30'>Zero transaction history</td></tr>}
+                {orders.length === 0 && <tr><td colSpan='9' className='px-8 py-20 text-center text-gray-400 text-[10px] font-black uppercase tracking-[0.3em] opacity-30'>Zero transaction history</td></tr>}
               </tbody>
             </table>
           </div>
@@ -474,7 +539,7 @@ export default function AdminDashboard() {
           <div className="overflow-x-auto">
             <table className='w-full text-left'>
               <thead>
-                <tr className="border-b bg-gray-50/50 text-secondary">
+                <tr className="border-b bg-gray-50/50 text-surface-900">
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Product</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Vendor</th>
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400'>Category</th>
@@ -483,7 +548,7 @@ export default function AdminDashboard() {
                   <th className='px-8 py-5 text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 text-right'>Action</th>
                 </tr>
               </thead>
-              <tbody className='divide-y text-secondary'>
+              <tbody className='divide-y text-surface-900'>
                 {[...allProducts].sort((a, b) => (a.approval_status === 'pending' ? -1 : 1) - (b.approval_status === 'pending' ? -1 : 1)).map(p => (
                   <tr key={p.id} className={`hover:bg-gray-50/50 transition-colors ${p.approval_status === 'pending' ? 'bg-yellow-50/50' : ''}`}>
                     <td className='px-8 py-6'>
@@ -492,7 +557,7 @@ export default function AdminDashboard() {
                     </td>
                     <td className='px-8 py-6 text-sm font-bold text-gray-600'>{p.vendors?.business_name || 'N/A'}</td>
                     <td className='px-8 py-6 text-sm font-medium text-gray-500'>{p.categories?.name || '—'}</td>
-                    <td className='px-8 py-6 text-sm font-black text-primary italic'>Rs. {p.price}</td>
+                    <td className='px-8 py-6 text-sm font-black text-primary-600 italic'>Rs. {p.price}</td>
                     <td className='px-8 py-6'>
                       <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${p.approval_status === 'approved' ? 'bg-green-100 text-green-700' :
                           p.approval_status === 'rejected' ? 'bg-red-100 text-red-700' :
@@ -563,8 +628,8 @@ export default function AdminDashboard() {
                     }}
                   />
                   <div className="text-center">
-                    <Upload className="h-10 w-10 mx-auto text-gray-300 group-hover:text-primary transition-colors mb-2" />
-                    <p className="text-xs font-bold text-gray-400 group-hover:text-primary uppercase tracking-widest">
+                    <Upload className="h-10 w-10 mx-auto text-gray-300 group-hover:text-primary-600 transition-colors mb-2" />
+                    <p className="text-xs font-bold text-gray-400 group-hover:text-primary-600 uppercase tracking-widest">
                       {qrUploading ? 'Uploading...' : 'Click to Upload QR'}
                     </p>
                   </div>
@@ -604,3 +669,4 @@ export default function AdminDashboard() {
     </div>
   );
 }
+

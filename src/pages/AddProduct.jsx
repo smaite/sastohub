@@ -109,7 +109,7 @@ export default function AddProduct() {
             required
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary outline-none"
+            className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary-600 outline-none"
           />
         </div>
 
@@ -119,7 +119,7 @@ export default function AddProduct() {
             required
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary outline-none h-32"
+            className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary-600 outline-none h-32"
           />
         </div>
 
@@ -130,7 +130,7 @@ export default function AddProduct() {
             required
             value={formData.price}
             onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-            className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary outline-none"
+            className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary-600 outline-none"
           />
         </div>
 
@@ -141,7 +141,7 @@ export default function AddProduct() {
             required
             value={formData.stock_quantity}
             onChange={(e) => setFormData({ ...formData, stock_quantity: e.target.value })}
-            className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary outline-none"
+            className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary-600 outline-none"
           />
         </div>
 
@@ -150,7 +150,7 @@ export default function AddProduct() {
           <select
             value={formData.category_id}
             onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-            className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary outline-none"
+            className="w-full p-2 border rounded-lg focus:ring-1 focus:ring-primary-600 outline-none"
           >
             <option value="">Select Category</option>
             {categories.map(cat => (
@@ -165,7 +165,7 @@ export default function AddProduct() {
             id="published"
             checked={formData.is_published}
             onChange={(e) => setFormData({ ...formData, is_published: e.target.checked })}
-            className="w-4 h-4 text-primary focus:ring-primary border-gray-300 rounded"
+            className="w-4 h-4 text-primary-600 focus:ring-primary-600 border-gray-300 rounded"
           />
           <label htmlFor="published" className="text-sm font-medium">Publish immediately</label>
         </div>
@@ -195,7 +195,7 @@ export default function AddProduct() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary-dark transition-colors disabled:opacity-50"
+            className="w-full bg-primary-600 text-white py-3 rounded-lg font-bold hover:bg-primary-700 transition-colors disabled:opacity-50"
           >
             {loading ? 'Uploading...' : 'Create Product'}
           </button>

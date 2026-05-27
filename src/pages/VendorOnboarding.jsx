@@ -7,12 +7,12 @@ import { Clock, Store, MapPin, CreditCard, FileText, Upload, CheckCircle, X, Glo
 function SectionHeader({ icon: Icon, number, title, subtitle }) {
   return (
     <div className="flex items-start gap-4 mb-6">
-      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-black text-sm">
+      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary-600 text-white flex items-center justify-center font-black text-sm">
         {number}
       </div>
       <div>
-        <h2 className="text-lg font-black text-secondary flex items-center gap-2">
-          <Icon className="h-5 w-5 text-primary" /> {title}
+        <h2 className="text-lg font-black text-surface-900 flex items-center gap-2">
+          <Icon className="h-5 w-5 text-primary-600" /> {title}
         </h2>
         <p className="text-sm text-gray-500 mt-0.5">{subtitle}</p>
       </div>
@@ -24,7 +24,7 @@ function Field({ label, required, hint, children }) {
   return (
     <div>
       <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-        {label} {required && <span className="text-primary">*</span>}
+        {label} {required && <span className="text-primary-600">*</span>}
       </label>
       {children}
       {hint && <p className="text-xs text-gray-400 mt-1">{hint}</p>}
@@ -42,7 +42,7 @@ function TextInput({ name, value, onChange, placeholder, type = 'text', required
       onChange={onChange}
       placeholder={placeholder}
       maxLength={maxLength}
-      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-primary outline-none transition text-sm"
+      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-primary-600 outline-none transition text-sm"
     />
   );
 }
@@ -51,10 +51,10 @@ function FileUploadField({ label, name, required, accept, onChange, file }) {
   return (
     <div>
       <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-        {label} {required && <span className="text-primary">*</span>}
+        {label} {required && <span className="text-primary-600">*</span>}
       </label>
       <label className="flex items-center gap-3 w-full px-4 py-3 border-2 border-dashed border-gray-200 rounded-xl cursor-pointer hover:border-primary hover:bg-red-50 transition group">
-        <Upload className="h-5 w-5 text-gray-400 group-hover:text-primary flex-shrink-0" />
+        <Upload className="h-5 w-5 text-gray-400 group-hover:text-primary-600 flex-shrink-0" />
         {file ? (
           <span className="text-sm text-green-600 font-medium flex items-center gap-1.5">
             <CheckCircle className="h-4 w-4" /> {file.name}
@@ -207,7 +207,7 @@ export default function VendorOnboarding() {
         <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
           <CheckCircle className="h-10 w-10 text-green-500" />
         </div>
-        <h2 className="text-2xl font-black text-secondary mb-3">Application Submitted!</h2>
+        <h2 className="text-2xl font-black text-surface-900 mb-3">Application Submitted!</h2>
         <p className="text-gray-500 mb-6">
           Your vendor application is under review. Our team will verify your details and notify you within <strong>24–48 hours</strong>.
         </p>
@@ -226,9 +226,9 @@ export default function VendorOnboarding() {
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Hero */}
-      <div className="bg-secondary text-white py-10 px-4">
+      <div className="bg-surface-900 text-white py-10 px-4">
         <div className="max-w-3xl mx-auto flex items-center gap-4">
-          <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">
+          <div className="w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center flex-shrink-0">
             <Store className="h-6 w-6 text-white" />
           </div>
           <div>
@@ -263,7 +263,7 @@ export default function VendorOnboarding() {
                   maxLength={500}
                   rows={4}
                   placeholder="Describe what you sell and what makes your shop unique..."
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-primary outline-none transition text-sm resize-none"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-primary-600 outline-none transition text-sm resize-none"
                 />
               </Field>
               <Field label="Business Website" hint="Optional — link to your existing website.">
@@ -275,7 +275,7 @@ export default function VendorOnboarding() {
                     value={form.website}
                     onChange={handleChange}
                     placeholder="https://yourwebsite.com"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-primary outline-none transition text-sm"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-primary-600 outline-none transition text-sm"
                   />
                 </div>
               </Field>
@@ -310,7 +310,7 @@ export default function VendorOnboarding() {
                     value={form.phone}
                     onChange={handleChange}
                     placeholder="98XXXXXXXX"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-primary outline-none transition text-sm"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-primary-600 outline-none transition text-sm"
                   />
                 </div>
               </Field>
@@ -334,7 +334,7 @@ export default function VendorOnboarding() {
                     value={form.account_number}
                     onChange={handleChange}
                     placeholder="e.g. 01234567890123"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-primary outline-none transition text-sm"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-100 focus:border-primary-600 outline-none transition text-sm"
                   />
                 </div>
               </Field>
@@ -378,7 +378,7 @@ export default function VendorOnboarding() {
 
           {/* ── Final Steps / Agreements ─────────────────────────── */}
           <div className="bg-white rounded-2xl border shadow-sm p-6 md:p-8">
-            <h2 className="text-lg font-black text-secondary mb-2">Final Steps</h2>
+            <h2 className="text-lg font-black text-surface-900 mb-2">Final Steps</h2>
             <p className="text-sm text-gray-500 mb-5">Please read and agree to the following before submitting your application.</p>
 
             <div className="space-y-4">
@@ -393,11 +393,11 @@ export default function VendorOnboarding() {
                     name={name}
                     checked={agree[name]}
                     onChange={handleAgree}
-                    className="mt-0.5 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary accent-primary flex-shrink-0"
+                    className="mt-0.5 w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-600 accent-primary-600 flex-shrink-0"
                   />
                   <span className="text-sm text-gray-600 leading-relaxed">
                     {label}{' '}
-                    {link && <span className="text-primary font-semibold underline cursor-pointer">{link}</span>}
+                    {link && <span className="text-primary-600 font-semibold underline cursor-pointer">{link}</span>}
                     {text}
                   </span>
                 </label>
@@ -407,7 +407,7 @@ export default function VendorOnboarding() {
             <button
               type="submit"
               disabled={loading || !allAgreed}
-              className="mt-8 w-full bg-primary text-white py-4 rounded-xl font-bold text-base hover:bg-orange-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="mt-8 w-full bg-primary-600 text-white py-4 rounded-xl font-bold text-base hover:bg-primary-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
